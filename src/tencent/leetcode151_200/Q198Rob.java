@@ -35,6 +35,50 @@ public class Q198Rob {
         return max_nums;
     }
 
+    private static int[] result;
+    public int rob2(int[] nums){
+        int idx = nums.length-1;
+        result = new int[idx+1];
+        for(int i=0;i<=idx;i++){
+            result[i] = -1;
+        }
+        return solve(idx,nums);
+    }
+    private int solve(int idx,int[] nums){
+        if(idx<0){
+            return 0;
+        }
+        if(result[idx]>=0){
+            return result[idx];
+        }
+        result[idx] = Math.max(solve(idx-1,nums),nums[idx]+solve(idx-2,nums));
+        return result[idx];
+    }
+
+    public int rob3(int[] nums){
+        //空
+        if(nums.length==0){
+            return 0;
+        }
+        //当大于等于两个元素时
+        int[] res;
+        res = new int[nums.length];
+        res[0] = nums[0];
+
+//        if(nums.length==1){
+//            return nums[0];
+//        }
+//        res[1] = Math.max(nums[0],nums[1]);
+        //等效替换成以下代码
+        if(nums.length>=2){
+            res[1] = Math.max(nums[0],nums[1]);
+        }
+
+        for(int idx=2;idx<nums.length;idx++){
+            res[idx] = Math.max(res[idx-1],nums[idx]+res[idx-2]);
+        }
+        return res[nums.length-1];
+    }
 
     public static void main(String[] args) {
         Q198Rob q = new Q198Rob();

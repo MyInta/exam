@@ -1,4 +1,4 @@
-package tencent.leetcode201_300;
+package tencent.leetcode201_250;
 
 /**
  * @author inta

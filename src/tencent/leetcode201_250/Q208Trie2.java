@@ -1,4 +1,4 @@
-package tencent.leetcode201_300;
+package tencent.leetcode201_250;
 
 /**
  * @author inta
@@ -36,7 +36,7 @@ public class Q208Trie2 {
             return child[getIdx(c)]!=null;
         }
         //增设节点
-        public void put(char c,TrieNode t){
+        public void put(char c){
             if(!containsKey(c)){
                 child[getIdx(c)] = new TrieNode();
             }
@@ -73,7 +73,7 @@ public class Q208Trie2 {
         for(int i=0;i<word.length();i++){
             char c = word.charAt(i);
             if(!t.containsKey(c)){
-                t.put(c,new TrieNode());
+                t.put(c);
             }
             //如果存在这个字符，就遍历下一个节点
             t = t.get(c);

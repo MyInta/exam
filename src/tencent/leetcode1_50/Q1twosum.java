@@ -1,4 +1,4 @@
-package tencent.leetcode1_100;
+package tencent.leetcode1_50;
 
 import java.util.Arrays;
 import java.util.HashMap;
