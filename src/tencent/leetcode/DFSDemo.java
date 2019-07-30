@@ -23,7 +23,7 @@ public class DFSDemo {
     private int numCol;
     private int total;
 
-    public int numIsland(char[][] grid){
+    public int numIslands(char[][] grid){
         total = 0;
         //validation input
         if(grid==null||grid.length<=0||grid[0].length<=0){

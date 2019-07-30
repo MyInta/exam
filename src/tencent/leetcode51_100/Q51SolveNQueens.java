@@ -1,9 +1,7 @@
 package tencent.leetcode51_100;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author inta
@@ -54,6 +52,7 @@ public class Q51SolveNQueens {
         }
         //去重，去行与斜线
         for(int i=0;i<n;i++){
+            //(y:idx x:i) y+x = k;y-x=k 前者必为正，后者可能为负值(y<x时) 两者最大值都为2(n-1)的情况，故后者加n-1
             if(!line[i]&&!plus[i+idx]&&!minus[idx-i+n-1]){
                 path[idx] = i;
                 line[i] = true;
