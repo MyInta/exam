@@ -24,6 +24,7 @@ import java.util.LinkedList;
  *
  */
 public class Q111minDepth {
+
     public class TreeNode{
         int val;
         TreeNode left;
@@ -32,6 +33,8 @@ public class Q111minDepth {
             this.val = val;
         }
     }
+
+    //========================广度优先=============================
     public class Pair{
         TreeNode tn;
         int depth;
@@ -64,4 +67,23 @@ public class Q111minDepth {
         }
         return depth;
     }
+
+    //========================递归=============================
+    public int minDepth02(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null&&root.right == null){
+            return 1;
+        }
+        int depth = Integer.MAX_VALUE;
+        if(root.left!= null){
+            depth =  Math.min(minDepth02(root.left),depth);
+        }
+        if(root.right!=null){
+            depth =  Math.min(minDepth02(root.right),depth);
+        }
+        return depth+1;
+    }
+
 }
