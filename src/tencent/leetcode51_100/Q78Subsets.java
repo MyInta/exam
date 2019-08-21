@@ -51,22 +51,23 @@ public class Q78Subsets {
         robot(0,nums);
         return lists;
     }
-}
-class Q78Subsets2{
 
-    public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        backtrack(0,nums,res,new ArrayList<Integer>());
-        return res;
-    }
+    private class Q78Subsets2{
 
-    private void backtrack(int st,int[] nums,List<List<Integer>> res,ArrayList<Integer> arr){
-        res.add(new ArrayList<Integer>(arr));
-        for(int i = st;i<nums.length;i++){
-            arr.add(nums[i]);
-            backtrack(i+1,nums,res,arr);
-            //减去数组中最后一个元素
-            arr.remove(arr.size()-1);
+        public List<List<Integer>> subsets(int[] nums) {
+            List<List<Integer>> res = new ArrayList<>();
+            backtrack(0,nums,res,new ArrayList<Integer>());
+            return res;
+        }
+
+        private void backtrack(int st,int[] nums,List<List<Integer>> res,ArrayList<Integer> arr){
+            res.add(new ArrayList<Integer>(arr));
+            for(int i = st;i<nums.length;i++){
+                arr.add(nums[i]);
+                backtrack(i+1,nums,res,arr);
+                //减去数组中最后一个元素
+                arr.remove(arr.size()-1);
+            }
         }
     }
 }

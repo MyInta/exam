@@ -100,12 +100,10 @@ public class Q139WordBreak {
     }
 
 
-}
-
 /**
  * 时间最优
  */
-class Q139WordBreak2 {
+private class Q139WordBreak2 {
     //使用一个缓存空间来去重
     Set<Integer> set;
 
@@ -136,5 +134,8 @@ class Q139WordBreak2 {
         //全遍历后没有提前返回true，说明没有一条路是完全走通的
         return false;
     }
+
+    }
+
 
 }

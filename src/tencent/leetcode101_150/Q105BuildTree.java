@@ -72,9 +72,8 @@ public class Q105BuildTree {
         return firstNode;
     }
 
-}
     //====================时间更优======================
-    class method2{
+    private class method2{
         private class TreeNode{
             int val;
             TreeNode left;
@@ -115,3 +114,6 @@ public class Q105BuildTree {
         }
 
     }
+
+
+}
