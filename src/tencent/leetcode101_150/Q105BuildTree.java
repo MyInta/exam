@@ -103,10 +103,9 @@ public class Q105BuildTree {
             if(left>right){
                 return null;
             }
-            TreeNode t = new TreeNode(pre[cur]);
+            TreeNode t = new TreeNode(pre[cur++]);
             //获得该节点值相等的数组对应索引位置
             int find = inMap.get(t.val);
-            cur++;
             //相当于在inorder数组中继续迭代
             t.left = helper(left,find-1);
             t.right = helper(find+1,right);

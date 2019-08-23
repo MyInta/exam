@@ -36,7 +36,7 @@ public class Q108SortedArrayToBST {
        if(left>right){
            return null;
        }
-       int mid = (left+right)>>1;
+       int mid = left+((right-left)>>1);
        TreeNode t = new TreeNode(temp[mid]);
        t.left = search(left,mid-1);
        t.right = search(mid+1,right);
@@ -45,8 +45,7 @@ public class Q108SortedArrayToBST {
 
     public TreeNode sortedArrayToBST(int[] nums) {
         temp = nums;
-        int right = nums.length-1;
-        return search(0,right);
+        return search(0,nums.length-1);
     }
 
 }
