@@ -1,7 +1,5 @@
 package tencent.leetcode101_150;
 
-import java.util.LinkedList;
-
 /**
  * @author inta
  * @date 2019/8/21
