@@ -1,11 +1,14 @@
 package tencent.leetcode301_350;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author inta
  * @date 2019/8/23
- * @describe 给定一个整数数组 nums，按要求返回一个新数组 counts。数组 counts 有该性质： counts[i] 的值是  nums[i] 右侧小于 nums[i] 的元素的数量。
+ * @describe 给定一个整数数组 nums，按要求返回一个新数组 counts。
+ * 数组 counts 有该性质： counts[i] 的值是  nums[i] 右侧小于 nums[i] 的元素的数量。
  *
  * 示例:
  *
@@ -20,8 +23,16 @@ import java.util.List;
  */
 public class Q315countSmaller {
     public List<Integer> countSmaller(int[] nums) {
-
-        //TODO 待做
-        return null;
+        List<Integer> list = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            int temp = 0;
+            for(int j=i;j<nums.length;j++){
+                if(nums[j]<nums[i]){
+                    temp++;
+                }
+            }
+            list.add(temp);
+        }
+        return list;
     }
 }
