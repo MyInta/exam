@@ -58,5 +58,14 @@ public class Q268MissingNumber {
         return -1;
     }
 
+    //题目特殊性，计算得到
+    public int missingNumber3(int[] nums) {
+        int res = 0;
+        for (int i = 0; i< nums.length; i++) {
+            res += i - nums[i];
+        }
+        return res + nums.length;
+    }
+
 
 }
