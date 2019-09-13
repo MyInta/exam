@@ -27,56 +27,58 @@ import java.util.List;
  * 解释: 4 皇后问题存在两个不同的解法。
  */
 public class Q51SolveNQueens {
+    int[] paths;
+    boolean[] lines;
+    List<List<String>> ans;
+    boolean[] plus;
+    boolean[] minus;
 
-    public int[] path;
-    public List<List<String>> ans;
-    public boolean[] line;
-    public boolean[] plus;
-    public boolean[] minus;
-    public void solve(int idx,int n){
-        if(idx>=n){
-            List<String> chess = new ArrayList<String>();
-            for(int i=0;i<n;i++){
-                String tmp = "";
-                for(int j=0;j<n;j++){
-                    if(j==path[i]){
-                        tmp +="Q";
-                    }else{
-                        tmp +=".";
+    //关于N皇后问题的解答
+    private void solution(int idx, int n) {
+        //如果idx大于等于n说明皇后们都已经找到所有合适位置，进行存储
+        if (idx >= n) {
+            List<String> list = new ArrayList<>(n);
+            for (int i = 0;i < n; i++) {
+                StringBuilder sb = new StringBuilder();
+                for (int j = 0; j < n; j++) {
+                    if (j == paths[i]) {
+                        sb.append('Q');
+                    } else {
+                        sb.append('.');
                     }
                 }
-                chess.add(tmp);
+                list.add(sb.toString());
             }
-            ans.add(chess);
+            ans.add(list);
             return;
         }
-        //去重，去行与斜线
-        for(int i=0;i<n;i++){
-            //(y:idx x:i) y+x = k;y-x=k 前者必为正，后者可能为负值(y<x时) 两者最大值都为2(n-1)的情况，故后者加n-1
-            if(!line[i]&&!plus[i+idx]&&!minus[idx-i+n-1]){
-                path[idx] = i;
-                line[i] = true;
-                plus[i+idx] = true;
-                minus[idx-i+n-1] = true;
-
-                solve(idx+1,n);
+        //遍历所有可能并去重，分别去掉行重复，斜线重复（正斜线plus和反斜线minus）
+        for (int i = 0; i < n; i++) {
+            //正斜线和反斜线一加一减分别为常值，加上n-1保证为正值
+            if (!lines[i] && !plus[idx + i]&& !minus[i - idx + n - 1]) {
+                paths[idx] = i;
+                lines[i] = true;
+                plus[idx + i] = true;
+                minus[i - idx + n - 1] = true;
+                solution(idx + 1,n);
                 //复原
-                line[i] = false;
-                plus[i+idx] = false;
-                minus[idx-i+n-1] = false;
+                lines[i] = false;
+                plus[idx + i] = false;
+                minus[i - idx + n - 1] = false;
             }
         }
-
     }
+
 
     public List<List<String>> solveNQueens(int n) {
-        path = new int[n];
+        paths = new int[n];
+        lines = new boolean[n];
         ans = new ArrayList<>();
-        line = new boolean[n];
-        plus = new boolean[(n<<1)];
-        minus = new boolean[(n<<1)];
-        solve(0,n);
+        plus = new boolean[n<<1];
+        minus =new boolean[n<<1];
+        solution(0, n);
         return ans;
     }
+
 
 }
