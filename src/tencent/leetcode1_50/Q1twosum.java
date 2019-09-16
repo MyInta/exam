@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @author inta
  * @date 2019/6/6
- * @describe
+ * @describe 求数组中的两个数 合为给定值
  */
 public class Q1twosum {
 
