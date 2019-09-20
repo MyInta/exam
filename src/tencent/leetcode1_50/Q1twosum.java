@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public class Q1twosum {
 
+    //132 ms	37.9 MB
     public int[] twoSum(int[] nums, int target) {
         //handle corner case
         if(nums==null||nums.length==0){
@@ -41,6 +42,7 @@ public class Q1twosum {
         return rst;
     }
 
+    //4 ms	38.6 MB
     private static int[] twoSum02(int[] nums,int target){
         int[] indexArray  = new int[2];
         //handle corner case
@@ -61,6 +63,24 @@ public class Q1twosum {
                 continue;
             }
             return indexArray; //因为前面的continue导致了没匹配到就跳过这一步
+        }
+        return null;
+    }
+
+    //34 ms	36.5 MB
+    public int[] twoSum3(int[] nums, int target) {
+        if (nums.length == 0) {
+            return null;
+        }
+        int[] res = new int[2];
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+                    res[0] = i;
+                    res[1] = j;
+                    return res;
+                }
+            }
         }
         return null;
     }
