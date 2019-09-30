@@ -23,4 +23,20 @@ public class Q11maxArea {
         }
         return res;
     }
+
+    //双指针法
+    public int maxArea2(int[] height) {
+        int res = 0;
+        int left = 0;
+        int right = height.length - 1;
+        while (left < right) {
+            res = Math.max(res, (right - left)*Math.min(height[left], height[right]));
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return res;
+    }
 }
