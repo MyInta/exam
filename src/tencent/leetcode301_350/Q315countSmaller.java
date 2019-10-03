@@ -22,116 +22,107 @@ import java.util.List;
  *
  */
 public class Q315countSmaller {
-    public List<Integer> countSmaller(int[] nums) {
-        List<Integer> list = new ArrayList<>();
-        for(int i=0;i<nums.length;i++){
-            int temp = 0;
-            for(int j=i;j<nums.length;j++){
-                if(nums[j]<nums[i]){
-                    temp++;
-                }
-            }
-            list.add(temp);
-        }
-        return list;
-    }
-
-
-
-    private class Q315countSmaller2{
-
-        private int[] temp;
-        private int[] counter;
-        private int[] indexes;
-
-        public List<Integer> countSmaller(int[] nums) {
-            List<Integer> res = new ArrayList<>();
-            int len = nums.length;
-            if (len == 0) {
-                return res;
-            }
-            temp = new int[len];
-            counter = new int[len];
-            indexes = new int[len];
-            for (int i = 0; i < len; i++) {
-                indexes[i] = i;
-            }
-            mergeAndCountSmaller(nums, 0, len - 1);
-            for (int i = 0; i < len; i++) {
-                res.add(counter[i]);
-            }
-            return res;
-        }
-
-        /**
-         * 针对数组 nums 指定的区间 [l, r] 进行归并排序，在排序的过程中完成统计任务
-         *
-         * @param nums
-         * @param l
-         * @param r
-         */
-        private void mergeAndCountSmaller(int[] nums, int l, int r) {
-            if (l == r) {
-                // 数组只有一个元素的时候，没有比较，不统计
-                return;
-            }
-            int mid = l + (r - l) / 2;
-            mergeAndCountSmaller(nums, l, mid);
-            mergeAndCountSmaller(nums, mid + 1, r);
-            // 归并排序的优化，同样适用于该问题
-            // 如果索引数组有序，就没有必要再继续计算了
-            if (nums[indexes[mid]] > nums[indexes[mid + 1]]) {
-                mergeOfTwoSortedArrAndCountSmaller(nums, l, mid, r);
-            }
-        }
-
-        /**
-         * [l, mid] 是排好序的
-         * [mid + 1, r] 是排好序的
-         *
-         * @param nums
-         * @param l
-         * @param mid
-         * @param r
-         */
-        private void mergeOfTwoSortedArrAndCountSmaller(int[] nums, int l, int mid, int r) {
-            // 3,4  1,2
-            for (int i = l; i <= r; i++) {
-                temp[i] = indexes[i];
-            }
-            int i = l;
-            int j = mid + 1;
-            // 左边出列的时候，计数
-            for (int k = l; k <= r; k++) {
-                if (i > mid) {
-                    indexes[k] = temp[j];
-                    j++;
-                } else if (j > r) {
-                    indexes[k] = temp[i];
-                    i++;
-                    // 此时 j 用完了，[7,8,9 | 1,2,3]
-                    // 之前的数就和后面的区间长度构成逆序
-                    counter[indexes[k]] += (r - mid);
-                } else if (nums[temp[i]] <= nums[temp[j]]) {
-                    indexes[k] = temp[i];
-                    i++;
-                    // 此时 [4,5, 6   | 1,2,3 10 12 13]
-                    //           mid          j
-                    counter[indexes[k]] += (j - mid - 1);
-                } else {
-                    // nums[indexes[i]] > nums[indexes[j]] 构成逆序
-                    indexes[k] = temp[j];
-                    j++;
-                }
-            }
-        }
-
-//        public static void main(String[] args) {
-//            int[] nums = new int[]{5, 2, 6, 1};
-//            Q315countSmaller2 solution = new Q315countSmaller2();
-//            List<Integer> countSmaller = solution.countSmaller(nums);
-//            System.out.println(countSmaller);
+    //耗时过长
+//    public List<Integer> countSmaller(int[] nums) {
+//        List<Integer> list = new ArrayList<>();
+//        for(int i=0;i<nums.length;i++){
+//            int temp = 0;
+//            for(int j= i + 1;j<nums.length;j++){
+//                if(nums[j]<nums[i]){
+//                    temp++;
+//                }
+//            }
+//            list.add(temp);
 //        }
+//        return list;
+//    }
 
+    private int[] count;
+    public List<Integer> countSmaller(int[] nums) {
+        //结果集
+        List<Integer> res = new ArrayList<>();
+        int len = nums.length;
+        //用于记录右边小于当前元素个数
+        count = new int[len];
+        int[] indexes = new int[len];
+        //填充数组序列
+        for (int i = 0; i < len; i ++) {
+            indexes[i] = i;
+        }
+        int left = 0;
+        int right = len - 1;
+        merge(nums, indexes, left, right);
+        for (int ct : count) {
+            res.add(ct);
+        }
+        return res;
+    }
+    //用于二分，划分开数组，然后调用方法实现计数
+    private void merge(int[] nums, int[] indexes, int left, int right) {
+        //当分割到小于2个元素时无比较，直接返回
+        if (left >= right) {
+            return;
+        }
+        int mid = ((right - left) >> 1) + left;
+        //分割为前后两半log(n)的由来
+        merge(nums, indexes, left, mid);
+        merge(nums, indexes, mid + 1, right);
+        //只要多于两个元素，就可以开始比较并计数,优化：当已排好序的数组前段小于等于右端，就没有计数必要了
+        if (nums[indexes[mid]] > nums[indexes[mid + 1]]) {
+            mergeAndCount(nums, indexes, left, right);
+        }
+    }
+    //合并数组与计数功能
+    private void mergeAndCount(int[] nums, int[] indexes, int left, int right) {
+        //创建一个新数组，用于临时存储排序后的序列位置，最后给回到索引indexes去
+        int[] cache = new int[right - left + 1];
+        //以及对应新数组的索引
+        int cIndex = 0;
+        int mid = ((right - left) >> 1) + left;
+        //创建两个指针，分别在前后段移动比较
+        int p1 = left;
+        int p2 = mid + 1;
+        //再来个记录右边比较后符合逆数的数量
+        int rightCount = 0;
+        //当指针各自没有移出自己所在区域时
+        while (p1 <= mid && p2 <= right) {
+            //如果发现逆数
+            if (nums[indexes[p1]] > nums[indexes[p2]]) {
+                //记录逆数+1
+                rightCount ++;
+                //把索引排序（相当于数组排序了）
+                cache[cIndex] = indexes[p2];
+                //然后后侧指针继续移动，继续找逆数
+                p2 ++;
+                //新数组索引也往后移
+                cIndex ++;
+            } else {
+                //否则，说明移动到了没有逆数的位置，需要把一直以来记录的数量上交count
+                count[indexes[p1]] += rightCount;
+                cache[cIndex] = indexes[p1];
+                //并且开始移动前侧的指针，换一个新元素找其逆数
+                p1 ++;
+                cIndex ++;
+            }
+        }
+        //当有指针越界，就只能是两种情况，一种右边越界，一种左边越界，指针没有同时移动，不存在第三种情况
+        while (p1 <= mid) {
+            //右边越界，说明这一整排都会比左指针往后找到的元素要小，直接计数
+            count[indexes[p1]] += rightCount;
+            cache[cIndex ++] = indexes[p1 ++];
+        }
+        while (p2 <= right) {
+            //左边越界，说明这一路过来都比右指针元素要小，没有逆数
+            cache[cIndex ++] = indexes[p2 ++];
+        }
+        //把排序后的索引缓存内容转移到indexes中
+//        for (int i = left; i <= right; i++) {
+//            //因为cache是生成在新的一段上，为比较段落的长度，而indexes是全局的，在赋值上需要注意索引位置
+//            indexes[i] = cache[i - left];
+//        }
+        for (int i =  right; i >= left; i--) {
+            //因为cache是生成在新的一段上，为比较段落的长度，而indexes是全局的，在赋值上需要注意索引位置
+            indexes[i] = cache[--cIndex];
+        }
     }
 }
