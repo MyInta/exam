@@ -24,7 +24,7 @@ public class Q41FirstMissingPositive {
         //遍历一遍后得到1-n排列数字 期间存在变数
         for (int cur = 0; cur <= len-1; cur++) {
             int temp = nums[cur];
-            while (nums[cur] > 0 && temp <= len&& temp != nums[temp - 1]) {
+            while (nums[cur] > 0 && temp <= len && temp != nums[temp - 1]) {
                 //交换
                 nums[cur] = nums[temp - 1];
                 nums[temp - 1] = temp;
