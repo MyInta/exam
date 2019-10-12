@@ -54,11 +54,13 @@ public class Q10isMatch {
     public boolean isMatch(String s, String p) {
         //如果匹配字符为空，就看被匹配字符是否也为空，至少要有patter存在
         if (p.isEmpty()) return s.isEmpty();
+        //如果不考虑*，所有字符原先只要挨个遍历比较即可，比较前需要排除s为空的情况
         boolean match_one = !s.isEmpty() && (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.');
-        //当匹配字符长度大于等于2的时候，并且当后者为*时候，有两条分支，一条是选择，另一条跳过这两个字符
+        //当匹配字符长度大于等于2的时候，才考虑为*时候，有两条分支，一条是*为0，p直接跳过两个，s不动;另一条p不动，动s
         if (p.length() >= 2 && p.charAt(1) == '*') {
             return isMatch(s, p.substring(2)) || (match_one && isMatch(s.substring(1), p));
         } else {
+            //如果没有*的顾虑，就是简单的字符挨个遍历，剩下的进入递归
             return match_one && isMatch(s.substring(1), p.substring(1));
         }
     }
