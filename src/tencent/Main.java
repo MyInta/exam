@@ -4,6 +4,7 @@ package tencent;
 
 public class Main {
     public static void main(String[] args) {
+        int i = Integer.MIN_VALUE;
         String res = "";
         char[] c = res.toCharArray();
         for (char cs : c) {
