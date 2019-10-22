@@ -1,10 +1,12 @@
 package tencent;
 
 
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        int i = Integer.MAX_VALUE;
+
+        int i = 3^1;
+        int j = 3&7;
+        System.out.println(i + " " + j);
     }
 }
