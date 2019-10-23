@@ -1,6 +1,9 @@
 package tencent.leetcode201_250;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author inta
@@ -31,38 +34,53 @@ import java.util.LinkedList;
  *
  */
 public class Q210findOrder {
+    //拓扑，使用邻接表和入度表
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        int[] res = new int[numCourses];
-        //设置一个入度数组
-        int[] degrees = new int[numCourses];
-        //遍历每个数组(每个小数组长度固定为2)，并将所有小数组1号位置的数值对应的入度数组值++
+       //去除边角
+        if (numCourses <= 0) return new int[0];
+        //创建邻接表
+        HashSet<Integer>[] nextCourses = new HashSet[numCourses];
+        for (int i = 0; i < numCourses; i ++) {
+            nextCourses[i] = new HashSet<>();
+        }
+        //创建入度表
+        int[] degree = new int[numCourses];
         for (int[] pre : prerequisites) {
-            degrees[pre[0]]++;
+            //给邻接表创建 元素与元素之间的连接关系
+            nextCourses[pre[1]].add(pre[0]);
+            //入度表增加每个节点的入度值
+            degree[pre[0]] ++;
         }
-        //找出所有入度为0的元素，入队，作为前驱节点
+        //需要一个队列来记录入度为0的情况
         LinkedList<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < degrees.length; i++) {
-            if (degrees[i] == 0) {
-                queue.add(i);
+        for (int i = 0; i < numCourses; i ++) {
+            if (degree[i] == 0) {
+                queue.addLast(i);
             }
         }
-        //当队列有元素的时候，就进行出队列与削减其对应后结点入度值得操作
+        //需要一个数组来记录出队的值
+        List<Integer> list = new ArrayList<>();
         while (!queue.isEmpty()) {
-            int first = queue.removeFirst();
-            //每次出队列后都要把课程数量减1，相当于去掉前驱得同时把范围缩小了
-            numCourses--;
-            res[numCourses - 1] = first;
-            for (int[] pre : prerequisites) {
-                if (pre[1] == first) {
-                    degrees[pre[0]]--;
-                    //如果该位置结点入度变为零了，就将元素（对应课程编号）入队
-                    if (degrees[pre[0]] == 0) {
-                        queue.add(pre[0]);
-                    }
-                }
+            //获得到队列里面为0的元素，并且消减队列
+            int temp = queue.removeFirst();
+            //记录出队的元素
+            list.add(temp);
+            //获得该元素对应的连接元素储存单元
+            HashSet<Integer> tempHashSet = nextCourses[temp];
+            //给这些元素都减度
+            for (Integer i : tempHashSet) {
+                degree[i] --;
+                //如果减到0，立即入队
+                if (degree[i] == 0) queue.addLast(i);
             }
         }
-        if (numCourses == 0) {
+        //判断，如果出队的元素长度和课程数相等，说明可以实现，反之说明不能实现
+        if (list.size() == numCourses) {
+            int[] res = new int[numCourses];
+            int res_index = 0;
+            for (int i : list) {
+                res[res_index ++] = i;
+            }
             return res;
         } else {
             return new int[0];

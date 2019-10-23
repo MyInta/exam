@@ -1,5 +1,6 @@
 package tencent.leetcode201_250;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -60,5 +61,41 @@ public class Q207Topology_canFinish {
             }
         }
         return numCourses == 0;
+    }
+
+    //看完210题解后，对原先思路的优化(使用了HashSet，寻找映射的元素的时间复杂降为1)，拓扑 连接表 + 入度表
+    public boolean canFinish2(int numCourses, int[][] prerequisites) {
+        if (numCourses <= 0) return false;
+        //创建一个连接表
+        HashSet<Integer>[] nextNums = new HashSet[numCourses];
+        for (int i = 0; i < numCourses; i ++) {
+            nextNums[i] = new HashSet<>();
+        }
+        //创建入度表
+        int[] degree = new int[numCourses];
+        for (int[] pre : prerequisites) {
+            nextNums[pre[1]].add(pre[0]);
+            degree[pre[0]] ++;
+        }
+        //使用一个队列来记录入度0的数值
+        LinkedList<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i ++) {
+            if (degree[i] == 0) queue.add(i);
+        }
+        //用来记录出队列了多少个
+        int count = 0;
+        while (!queue.isEmpty()) {
+            Integer temp = queue.pop();
+            count ++;
+            //将这个出队的队列元素连接的所有元素对应的入度-1
+            HashSet<Integer> tempHS = nextNums[temp];
+            for (Integer i : tempHS) {
+                degree[i] --;
+                //如果入度成为0，就加入到队列中
+                if (degree[i] == 0) queue.add(i);
+            }
+        }
+        //最后看出队列的数量是否和课程数量一致即可
+        return count == numCourses;
     }
 }
