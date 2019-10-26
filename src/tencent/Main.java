@@ -4,9 +4,7 @@ package tencent;
 
 public class Main {
     public static void main(String[] args) {
-
-        int i = 3^1;
-        int j = 3&7;
-        System.out.println(i + " " + j);
+    char c= '0';
+        System.out.println(c == 0);
     }
 }
