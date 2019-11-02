@@ -1,13 +1,12 @@
 package tencent;
 
 
-import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) {
-        Stack<Integer> stack = new Stack<>();
-        int temp = stack.peek();
-        System.out.println(temp);
+        int i = 1;
+        i = (i >> 1);
+        System.out.println(i);
     }
 
 }
