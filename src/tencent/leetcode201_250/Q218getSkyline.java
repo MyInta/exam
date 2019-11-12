@@ -1,6 +1,9 @@
 package tencent.leetcode201_250;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * @author inta
@@ -32,8 +35,64 @@ import java.util.List;
  *
  */
 public class Q218getSkyline {
-    //TODO 太难了吧。。。。
-    //    public List<List<Integer>> getSkyline(int[][] buildings) {
-//
-//    }
+    //看了N多大佬解题，还是一头雾水，但多少明白了一点点，先敲着理思路
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (buildings.length == 0) return res;
+        PriorityQueue<Pair> prior = new PriorityQueue<>((a, b) -> {
+            //优先比较坐标
+            if (a.pos != b.pos) {
+                return a.pos - b.pos;
+            } else if (a.height != b.height) {
+                //再比较高度
+                return a.height - b.height;
+            } else {
+                //若都相等，再返回0
+                return 0;
+            }
+        });
+        //遍历并填充prior，想要左右坐标有区分，就规定左坐标的高度为负，右坐标正常即可
+        for (int[] build : buildings) {
+            prior.add(new Pair(build[0], -build[2]));
+            prior.add(new Pair(build[1], build[2]));
+        }
+        //高度也记录下来，从高到低
+        PriorityQueue<Integer> p_height = new PriorityQueue<>((a, b) -> b - a);
+        p_height.add(0);
+        //记录前一个最高的高度
+        int pre = 0;
+        //准备接受新的转折点
+        List<Integer> list;
+        while (!prior.isEmpty()) {
+            Pair p = prior.poll();
+            //如果是负数，说明是左坐标，添加高度，反之删去对应高度
+            if (p.height < 0) {
+                p_height.add(-p.height);
+            } else {
+                //因为高度题意给是大于0的，不用考虑为0
+                p_height.remove(p.height);
+            }
+            //当前一个最高高度和当前最高度不相等，说明出现了转折点，需要记录下来，并同步最高点
+            if (pre != p_height.peek()) {
+                pre = p_height.peek();
+                list = new ArrayList<>();
+                list.add(p.pos);
+                list.add(pre);
+                res.add(list);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 用来记录坐标和对应的高度，在设置的时候，左边界高度设为负值，右边界正常
+     */
+    private class Pair{
+        int pos;
+        int height;
+        Pair(int pos, int height) {
+            this.pos = pos;
+            this.height = height;
+        }
+    }
 }
