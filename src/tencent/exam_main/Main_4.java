@@ -36,24 +36,10 @@ import java.util.Map;
  * 交换 s[0] 和 s[1], s = "abc"
  */
 public class Main_4 {
-    private Map<Integer, Character> map;
-    public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
-        char[] chars = s.toCharArray();
-        map = new HashMap<>();
-        int[] nums = new int[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-            map.put(i, chars[i]);
-            nums[i] = i;
-        }
-        for (List<Integer> l:pairs) {
-            int temp = nums[l.get(0)];
-            nums[l.get(0)] = nums[l.get(1)];
-            nums[l.get(1)] = temp;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int j = 0; j < map.size(); j++) {
-            sb.append(map.get(nums[j]));
-        }
-        return sb.toString();
+    public static void main(String[] args) {
+        String a = "xcv";
+        String b = "xcv";
+        System.out.println(a == b);
     }
+
 }
