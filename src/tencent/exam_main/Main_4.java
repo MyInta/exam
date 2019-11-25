@@ -39,7 +39,7 @@ public class Main_4 {
     public static void main(String[] args) {
         String a = "xcv";
         String b = "xcv";
-        System.out.println(a == b);
+        System.out.println(a.substring(0,0));
     }
 
 }
