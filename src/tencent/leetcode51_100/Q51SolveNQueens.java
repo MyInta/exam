@@ -30,12 +30,13 @@ public class Q51SolveNQueens {
     int[] paths;
     boolean[] lines;
     List<List<String>> ans;
+    // /线上
     boolean[] plus;
+    // \线上
     boolean[] minus;
-
     //关于N皇后问题的解答
     private void solution(int idx, int n) {
-        //如果idx大于等于n说明皇后们都已经找到所有合适位置，进行存储
+        //如果idx大于等于n说明皇后们都已经找到所有合适位置，进行存储（遍历到第idx行）
         if (idx >= n) {
             List<String> list = new ArrayList<>(n);
             for (int i = 0;i < n; i++) {
@@ -52,10 +53,11 @@ public class Q51SolveNQueens {
             ans.add(list);
             return;
         }
-        //遍历所有可能并去重，分别去掉行重复，斜线重复（正斜线plus和反斜线minus）
+        //遍历所有可能并去重，分别去掉行重复，斜线重复（正斜线/plus和反斜线\minus）
         for (int i = 0; i < n; i++) {
             //正斜线和反斜线一加一减分别为常值，加上n-1保证为正值
             if (!lines[i] && !plus[idx + i]&& !minus[i - idx + n - 1]) {
+                //记录第idx行填充一个皇后，该皇后在第i列
                 paths[idx] = i;
                 lines[i] = true;
                 plus[idx + i] = true;
