@@ -52,7 +52,7 @@ public class Q547findCircleNum {
         for (int j = 0; j < m; j ++) {
             if (!visited[j] && M[i][j] == 1) {
                 visited[j] = true;
-                //第几个列发现新值，就遍历该列同值得行，因为是正方形
+                //第几个列发现新值，就遍历该列同值的行，因为是正方形
                 dfs(M, m, j);
             }
         }
