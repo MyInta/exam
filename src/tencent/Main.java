@@ -3,7 +3,7 @@ package tencent;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println((char)('A' + 25));
+        System.out.println(Integer.parseInt(""));
     }
 
 }
