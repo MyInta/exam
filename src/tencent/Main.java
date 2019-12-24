@@ -1,23 +1,32 @@
 package tencent;
 
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 public class Main {
 
-    //找字符串数量
-    public static int countStr(String str, String s) {
-        int res = 0;
-        int index = 0;
-        while (index >= 0 && index <= s.length() && s.indexOf(str, index) >= 0) {
-            index = s.indexOf(str, index) + 1;
-            res ++;
-        }
-        return res;
-    }
-
     public static void main(String[] args) {
-//        System.out.println(countStr("ab", "aabcabcab"));
-        String s = "abc";
-        System.out.println(s.indexOf("c", 3));
+        List l = null;
+        List l2 = null;
+        List l3 = null;
+        List l4 = null;
+        List l5 = new ArrayList();
+        l5.add("ad");
+        Queue<List> q = new LinkedList<>();
+        q.add(l);
+        q.add(l2);
+        q.add(l3);
+        q.add(l4);
+        q.add(l5);
+
+        System.out.println(q.size());
+        for (List list : q) {
+            System.out.println(list);
+        }
+
     }
 
 }
