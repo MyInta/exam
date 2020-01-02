@@ -32,6 +32,7 @@ import java.util.List;
  * 输出: "2314"
  */
 public class Q60getPermutation {
+    //拷贝的k值，方便直接增减操作
     private int k_temp;
     private int getFactorial(int n) {
         int res = 1;
@@ -45,16 +46,19 @@ public class Q60getPermutation {
         //每个元素对应数量最大为(n - 1)!
         int sum = getFactorial(n - 1);
         int num = 1;
+        //挨个遍历，数量超过某元素开头数量，就找下一个元素，并缩小总数量k_temp值
         while (k_temp > sum) {
             num ++;
             k_temp -= sum;
         }
+        //此时，剩余k_temp值在num号元素为开头位置的支线中
         return num;
     }
-    //获取第n个真实的元素值（内部n为集合中的第几个，集合随着元素的删减会动态变化，而次数关系是固定的）
+    //前面num只是号码牌，我们需要获取其真实的元素值（内部n为集合中的第几个，集合随着元素的删减会动态变化，而次数关系是固定的）
     private int get_realNum(int n, List<Integer> list) {
         int index = n - 1;
         Integer real_num = list.get(index);
+        //既然已经获取真实值，用过后面不会再出现，所以list缩减掉,相当于进入下一位
         list.remove(real_num);
         return real_num;
     }
