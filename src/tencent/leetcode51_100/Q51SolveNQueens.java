@@ -27,6 +27,7 @@ import java.util.List;
  * 解释: 4 皇后问题存在两个不同的解法。
  */
 public class Q51SolveNQueens {
+    //记录每一行中，皇后位于的列索引位置
     int[] paths;
     boolean[] lines;
     List<List<String>> ans;

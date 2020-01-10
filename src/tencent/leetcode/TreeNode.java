@@ -3,7 +3,7 @@ package tencent.leetcode;
 /**
  * @author inta
  * @date 2019/7/1
- * @describe 二叉树
+ * @describe 二叉树    相关遍历方式 已经解在题库中 【前序 144 中序 94 后序145】
  */
 public class TreeNode {
     TreeNode left;
