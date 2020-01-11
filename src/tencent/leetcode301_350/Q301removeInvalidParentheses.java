@@ -54,16 +54,20 @@ public class Q301removeInvalidParentheses {
             return;
         }
         for (int i = start; i < sChars.length; i ++) {
+            //简单的去重，略微优化一下，对结果不影响
             if (i - 1 >= start && sChars[i] == sChars[i - 1]) {
                 continue;
             }
+            //准备一个长度-1的数组来装删除一个无效括号后的原数组
             char[] newChar = new char[sChars.length - 1];
             int index = 0;
             for (int k = 0; k < sChars.length; k ++) {
+                //除该索引i即我们认为的无效括号位置外，全都添加到新数组中去
                 if (k != i) {
                     newChar[index ++] = sChars[k];
                 }
             }
+            //去掉一个括号，并深入遍历找下一个可能需要删除的地方，并注意此时用的是新数组
             if (left > 0 && sChars[i] == '(') {
                 dfs(newChar, i, left - 1, right);
             }
