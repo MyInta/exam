@@ -49,6 +49,7 @@ public class Q122maxProfit {
         int res = 0;
         for (int i = 0; i < prices.length - 1; i++) {
             if (prices[i + 1] > prices[i]) {
+                //虽然是买卖不限次，但只要是升序状态下，减少卖出操作，都会多赚点
                 res += prices[i + 1] - prices[i];
             }
         }
