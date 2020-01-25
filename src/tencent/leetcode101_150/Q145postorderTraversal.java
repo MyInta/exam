@@ -30,36 +30,36 @@ public class Q145postorderTraversal {
         }
     }
 
-    //使用迭代,参考的评论区方法，有点繁琐难理解
+    //看了大神的解答，通过讲解使用set保存已遍历过的元素，层层深入进行诠释，最后使用一个结点保存上一访问结点信息
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> res = new ArrayList<>();
-        //使用栈保存父节点信息
+        TreeNode pre = null;
         Stack<TreeNode> stack = new Stack<>();
-        if (root == null) return res;
-        //用来解决重复遍历的难点
-        TreeNode solution = null;
+        //后续遍历，不要提前push root进栈，不方便提取
         while (!stack.isEmpty() || root != null) {
-            //当可以往左子树遍历时候，优先左子树
             if (root != null) {
                 stack.push(root);
                 root = root.left;
             } else {
-                root = stack.peek();
-                //当root到左子树头，需要考虑其右子树，但难点在于右子树可能会重复遍历
-                if (root.right != null && root.right != solution) {
-                    root = root.right;
+                //视察下栈顶元素，不要取出来
+                TreeNode cur = stack.peek();
+                //如果左节点为空，就考虑右节点和是否遍历过
+                if (cur.right != null && cur.right != pre) {
+                    //若右节点存在且不是访问过的，指针直到该位置
+                    root = cur.right;
                 } else {
-                    //当左右两边都为null的时候，可以赋值了
-                    res.add(root.val);
-                    //难点来了，往上回溯的父节点，如何避免再次向下找重复的左右节点呢，用一个节点保存
+                    //否则，可能是左右子节点都没了或者是访问过的，都需要从栈中剔除
                     stack.pop();
-                    solution = root;
-                    root = null;
+                    //添加该元素
+                    res.add(cur.val);
+                    //将跟踪用的结点pre刷新
+                    pre = cur;
                 }
             }
         }
         return res;
     }
+
 
 
     //使用递归特比简单
@@ -96,6 +96,33 @@ public class Q145postorderTraversal {
             }
             if (temp.right != null) {
                 que.addFirst(temp.right);
+            }
+        }
+        return res;
+    }
+
+    //还有一种思想，代码看起来比较简洁，使用双次push，来保留根，这样可以同前序一样从栈中放心pop了
+    public List<Integer> postorderTraversal4(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        if (root != null) {
+            stack.push(root);
+            stack.push(root);
+        }
+        while (!stack.isEmpty()) {
+            //同前序类似，考虑子节点，若和根节点同，说明在左子树，不同，则在右子树需要添加了
+            TreeNode cur = stack.pop();
+            if (!stack.isEmpty() && cur == stack.peek()) {
+                if (cur.right != null) {
+                    stack.push(cur.right);
+                    stack.push(cur.right);
+                }
+                if (cur.left != null) {
+                    stack.push(cur.left);
+                    stack.push(cur.left);
+                }
+            } else {
+                res.add(cur.val);
             }
         }
         return res;
