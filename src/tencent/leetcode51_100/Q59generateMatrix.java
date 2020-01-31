@@ -1,6 +1,5 @@
 package tencent.leetcode51_100;
 
-import java.util.ArrayList;
 
 /**
  * @author inta
