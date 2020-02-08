@@ -60,4 +60,19 @@ public class Q7reverse {
         }
         return res;
     }
+
+    //群里大佬给的方式，溢出直接返回0
+    public int reverse3(int x) {
+        int ans = 0;
+        while(x != 0) {
+            //只要溢出就返回0
+            if ((ans * 10) / 10 != ans) {
+                ans = 0;
+                break;
+            }
+            ans = ans * 10 + x % 10;
+            x /= 10;
+        }
+        return ans;
+    }
 }

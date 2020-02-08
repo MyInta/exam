@@ -1,7 +1,5 @@
 package tencent.leetcode301_350;
 
-import tencent.Main;
-
 /**
  * @author inta
  * @date 2019/10/3
@@ -21,14 +19,19 @@ import tencent.Main;
 public class Q309maxProfit {
     public int maxProfit(int[] prices) {
         int len = prices.length;
+        //没有持股状态
         int dp_i_0 = 0;
+        //持股状态
         int dp_i_1 = Integer.MIN_VALUE;
-        //表示前面卖掉后，为持股时状态
+        //预防冷冻期，所以记载上一个没有持股状态
         int dp_pre_0 = 0;
         for (int i = 0; i < len; i ++) {
             int temp = dp_i_0;
+            //当前位置没有持股时，其状态前面可能来自于没有持股，或者本来持股但是卖掉了
             dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+            //处于持股时，其状态可能来自于本来就持股，或者之前没有持股，但是买了新股进来，注意冷冻期不能买股
             dp_i_1 = Math.max(dp_i_1, dp_pre_0 - prices[i]);
+            //更新上一个没有持股状态
             dp_pre_0 = temp;
         }
         return dp_i_0;
