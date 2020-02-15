@@ -144,4 +144,82 @@ public class Q127ladderLength {
             return 0;
         }
     }
+
+    //参考网友的双向bfs 35ms
+    public int ladderLength3(String beginWord, String endWord, List<String> wordList) {
+        int len = beginWord.length();
+        //查看末尾是否存在于字典中
+        boolean flag = false;
+        for (String word : wordList)
+            if (word.equals(endWord))
+                flag = true;
+        if (!flag) return 0;
+        //用一个map来保存所有字典中改变一位的字符串，所能变成的字典中的字情况
+        Map<String, Set<String>> map = new HashMap<>();
+        for (String word : wordList) {
+            char[] chars = word.toCharArray();
+            for (int i = 0; i < len; i ++) {
+                char c = chars[i];
+                chars[i] = '*';
+                String temp = String.valueOf(chars);
+                //复原
+                chars[i] = c;
+                //如果该模板没有被保存过，新建一个
+                if (!map.containsKey(temp)) {
+                    map.put(temp, new HashSet<>());
+                }
+                map.get(temp).add(word);
+            }
+        }
+        //双向bfs，一侧为推动方，一侧为比较方，为防止过多冗余，我们推动方始终让其为宽度最小方
+        Set<String> begin = new HashSet<>();
+        Set<String> end = new HashSet<>();
+        begin.add(beginWord);
+        end.add(endWord);
+        //保留所有字典中字符串信息
+        Set<String> all = new HashSet<>(wordList);
+        //距离,保底距离为1，因为考虑到起始字符串算一个距离
+        int dis = 1;
+        while (!begin.isEmpty() && !end.isEmpty()) {
+            //从保留信息中取出访问到的该层元素，因为是与起始只差一位，考虑最短路径下绝对不会被后序访问到，所以大胆去除
+            all.removeAll(begin);
+            //用来存储下一层元素
+            Set<String> nextSet = new HashSet<>();
+            //找出当前begin层的元素数量，用来挨个遍历找下一层元素
+            for (String b : begin) {
+                char[] chars = b.toCharArray();
+                for (int i = 0; i < len; i ++) {
+                    char c = chars[i];
+                    chars[i] = '*';
+                    String bTemp = String.valueOf(chars);
+                    //回溯
+                    chars[i] = c;
+                    //如果该模板没有在字典中找到对应信息，跳过继续
+                    if (!map.containsKey(bTemp)) continue;
+                    //否则说明符合模板要求，就遍历模板对应字典内字符串
+                    for (String word : map.get(bTemp)) {
+                        //如果该字符是存在于bfs另一侧的层中，直接返回距离
+                        if (end.contains(word)) return dis + 1;
+                        //否则就给下一层添加,而这个字符串得是存在于字典中，并且没有被访问过的
+                        if (all.contains(word)) {
+                            nextSet.add(word);
+                        }
+                    }
+                }
+            }
+            //此时下一层都已经添加好了，就将起始地址改为下一层
+            begin = nextSet;
+            //需要考虑起始侧为哪一侧，因为我们前面讲了，需要宽度最窄的为起始，这样数据冗余少
+            Set<String> tempSet;
+            if (begin.size() > end.size()) {
+                //长度起始大，此时考虑交换
+                tempSet = begin;
+                begin = end;
+                end = tempSet;
+            }
+            //层次递增
+            dis ++;
+        }
+        return 0;
+    }
 }
