@@ -108,6 +108,7 @@ public class Q127ladderLength {
             set2.add(beginWord);
             set.add(endWord);
             while (!queue.isEmpty() || !queue2.isEmpty()) {
+                //本质上就是找宽度最小的为推进方，宽度大了就切换另一侧开始查找
                 if (queue.isEmpty() || !queue2.isEmpty() && queue2.size() <= queue.size()) {
                     int len = queue2.size();
                     level2 ++;
@@ -220,6 +221,57 @@ public class Q127ladderLength {
             //层次递增
             dis ++;
         }
+        return 0;
+    }
+
+    //做完126后反过来思考是否可以更精简一点
+    public int ladderLength4(String beginWord, String endWord, List<String> wordList) {
+        //保留所有字典中元素
+        Set<String> all = new HashSet<>(wordList);
+        //结尾不存在即说明无解
+        if (!all.contains(endWord)) return 0;
+        //分别保存bfs推动侧和接受侧
+        Set<String> begin = new HashSet<>();
+        Set<String> end = new HashSet<>();
+        begin.add(beginWord);
+        end.add(endWord);
+        //起始位置beginWord算一个长度
+        int res = 1;
+        while (!begin.isEmpty()) {
+            //从字典中去掉推动侧所有元素
+            all.removeAll(begin);
+            //此时先添加一行记录
+            res ++;
+            //保存下一行的信息
+            Set<String> nexLine = new HashSet<>();
+            for (String b : begin) {
+                char[] bChars = b.toCharArray();
+                for (int i = 0; i < bChars.length; i ++) {
+                    //保留原先是哪个字符
+                    char mark = bChars[i];
+                    for (char ch = 'a'; ch <= 'z'; ch ++) {
+                        if (ch == mark) continue;
+                        bChars[i] = ch;
+                        String newStr = String.valueOf(bChars);
+                        //如果已经碰面，就直接返回
+                        if (end.contains(newStr)) return res;
+                        //如果字典中有她，就添加到下一行
+                        if (all.contains(newStr)) nexLine.add(newStr);
+                    }
+                    //回溯
+                    bChars[i] = mark;
+                }
+            }
+            begin = nexLine;
+            //选择宽度最段为推动侧
+            Set<String> temp;
+            if (begin.size() > end.size()) {
+                temp = begin;
+                begin = end;
+                end = temp;
+            }
+        }
+        //没找到合适碰面的，就是无解
         return 0;
     }
 }

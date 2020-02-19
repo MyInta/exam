@@ -84,13 +84,11 @@ public class Q105BuildTree {
         }
 
         int[] pre;
-        int[] in;
         int cur = 0;
         Map<Integer,Integer> inMap = new HashMap<>();
 
         public TreeNode buildTree(int[] preorder,int[] inorder){
             this.pre = preorder;
-            this.in = inorder;
             //将inorder里面的所有元素包装到map中去
             int map_idx = 0;
             for(int i:inorder){
@@ -110,6 +108,29 @@ public class Q105BuildTree {
             t.left = helper(left,find-1);
             t.right = helper(find+1,right);
             return t;
+        }
+
+
+        //考虑使用指针，虽然比较复杂，但是效率应该会比上面高一点
+        private int[] p;
+        private Map<Integer, Integer> iMap;
+        public TreeNode buildTree2(int[] preorder,int[] inorder){
+            this.p = preorder;
+            this.iMap = new HashMap<>();
+            for (int i = 0; i < inorder.length; i ++) {
+                iMap.put(inorder[i], i);
+            }
+            return build(0, p.length - 1, 0, inorder.length - 1);
+        }
+        private TreeNode build(int p_l, int p_r, int i_l, int i_r) {
+            if (p_l > p_r || i_l > i_r) return null;
+            TreeNode root = new TreeNode(p[p_l]);
+            int index = iMap.get(p[p_l]);
+            //构建的时候，考虑中序是map获取的，前序能用的，左边得去掉根节点，即p_l + 1, 再根据中序i_l - > index - 1的区间距离确定新的P右界
+            root.left = build(p_l + 1, p_l + index - i_l, i_l, index - 1);
+            //同上，先确定中序index+1->i_r,再考虑p的右界先固定为p_r,减去中序区间距离为新的p左边界
+            root.right = build(p_r - i_r + index + 1, p_r, index + 1, i_r);
+            return root;
         }
 
     }

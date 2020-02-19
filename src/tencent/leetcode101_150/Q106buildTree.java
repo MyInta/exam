@@ -68,6 +68,7 @@ public class Q106buildTree {
         int root_value = postorder[p_r];
         int index = hashMap.get(root_value);
         TreeNode root = new TreeNode(root_value);
+        //各有一个位置不再取，inorder不取index,post不取末端，但两者截取的长度要一致
         root.left = solution(i_l, index - 1, p_l, p_l + index - i_l - 1);
         root.right = solution(index + 1, i_r, p_l + index - i_l, p_r - 1);
         return root;
