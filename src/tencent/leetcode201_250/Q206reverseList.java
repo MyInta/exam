@@ -35,7 +35,9 @@ public class Q206reverseList {
             }
             //p只是来记录最后找到的那个元素，也可以全局变量试试获得，用于返回一个最终头元素
             ListNode p = reverseList(head.next);
+            //设定逆序方向上的链接
             head.next.next = head;
+            //将原先顺序方向的链接断开
             head.next = null;
             return p;
         }

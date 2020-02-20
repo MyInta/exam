@@ -1,5 +1,7 @@
 package tencent.leetcode1_50;
 
+import tencent.Main;
+
 /**
  * @author inta
  * @date 2019/11/25
@@ -64,6 +66,41 @@ public class Q25reverseKGroup {
 
         head.next = reverseKGroup(temp_next, k);
 
+        return temp;
+    }
+
+    //使用的思路是递归，K范围内逆序，小于K就直接返回头，由原先保存的节点后K位置元素为新的遍历头，进入下一层递归
+    public ListNode reverseKGroup2(ListNode head, int k) {
+        //边界
+        if (k <= 1 || head == null || head.next == null) return head;
+        //遍历K-1位置之后可考虑成为返回对象
+        ListNode temp = head;
+        int k_copy = k;
+        //遍历k-1个元素，看看长度够不够，够就继续，不够就返回原先头
+        while (k_copy > 1) {
+            temp = temp.next;
+            //如果长度范围内，指针就已经到了空，说明长度不够
+            if (temp == null) return head;
+            k_copy --;
+        }
+        //此时没有返回的情况下，temp已经是新的头节点了，准备最后返回
+        //保留预备递归用的头节点
+        ListNode nextHead = temp.next;
+        //逆序操作需要两个指针
+        ListNode pre = head;
+        ListNode cur = head.next;
+        //重置长度
+        k_copy = k;
+        //因为不满足长度要求的都直接被返回了，这里就不用考虑空指针了吧
+        while (k_copy > 1) {
+            ListNode next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+            k_copy --;
+        }
+        //此时完成了部分逆序，我们继续寻求下一段的逆序情况,并且注意此时head为逆序末尾
+        head.next = reverseKGroup(nextHead, k);
         return temp;
     }
 }
