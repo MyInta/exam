@@ -1,4 +1,4 @@
-package offer.V1_50;
+package interview.I1_5;
 
 /**
  * @author inta
@@ -19,7 +19,7 @@ package offer.V1_50;
  * 如果你不使用额外的数据结构，会很加分。
  *
  */
-public class V1isUnique {
+public class I0101isUnique {
     public boolean isUnique(String astr) {
         int[] counts = new int[128];
         for (char c : astr.toCharArray()) {

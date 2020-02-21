@@ -78,4 +78,41 @@ public class Q438findAnagrams {
         }
         return res;
     }
+
+    public List<Integer> findAnagrams2(String s, String p) {
+        //结果集
+        List<Integer> res = new ArrayList<>();
+        //保存字典中的所有信息
+        int[] dic = new int[26];
+        //复制一份为滑动窗口
+        int[] window = new int[26];
+        //长度不符合，直接返回
+        if (p.length() > s.length()) return res;
+        char[] s_chars = s.toCharArray();
+        //把下面这行去掉，p直接charAt获取，效率会提高很多，
+        // 可能与创建字符串效率会降低有关吧，而s创建是为了后序频繁的查找索引方便
+        char[] p_chars = p.toCharArray();
+        for (int i = 0; i < p.length(); i ++) {
+            dic[p_chars[i] - 'a'] ++;
+            window[s_chars[i] - 'a'] ++;
+        }
+        int j = p.length();
+        int i;
+        for (i = 0; i < s.length() - p.length(); i ++) {
+            if (isMatch(dic, window)) res.add(i);
+            //移动窗口，考虑原先的位置数量-1
+            window[s_chars[i] - 'a'] --;
+            //新位置数量+1
+            window[s_chars[j ++] - 'a'] ++;
+        }
+        if (isMatch(dic, window)) res.add(i);
+        return res;
+    }
+    private boolean isMatch(int[] a, int[] b) {
+        for (int i = 0; i < a.length; i ++) {
+            //遇到不一样就说明两者不相同，直接返回即可
+            if (a[i] != b[i]) return false;
+        }
+        return true;
+    }
 }
