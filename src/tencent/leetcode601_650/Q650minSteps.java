@@ -27,7 +27,7 @@ public class Q650minSteps {
     public int minSteps(int n) {
         int res = 0;
         for (int i = 2; i <= n; i ++) {
-            //求[2,n]内素数
+            //求[2,n]内素数 也可以理解为求n目前可以被哪个大于等2的最小值整除，如果可以说明能被化为这些小块
             while (n % i == 0) {
                 res += i;
                 //n去除该因子，找下一个因子

@@ -129,7 +129,9 @@ public class Q105BuildTree {
             //构建的时候，考虑中序是map获取的，前序能用的，左边得去掉根节点，即p_l + 1, 再根据中序i_l - > index - 1的区间距离确定新的P右界
             root.left = build(p_l + 1, p_l + index - i_l, i_l, index - 1);
             //同上，先确定中序index+1->i_r,再考虑p的右界先固定为p_r,减去中序区间距离为新的p左边界
-            root.right = build(p_r - i_r + index + 1, p_r, index + 1, i_r);
+            // 【本质上：left和right是对原有区间(不含作为根结点位置)的切割】，所以两种理解思路，长度也好，区间切割也好，下面都可以换用
+//            root.right = build(p_r - i_r + index + 1, p_r, index + 1, i_r);
+            root.right = build(p_l + index - i_l + 1, p_r, index + 1, i_r);
             return root;
         }
 

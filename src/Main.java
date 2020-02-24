@@ -1,7 +1,3 @@
-package tencent;
-
-
-
 public class Main {
 //    private class TreeNode {
 //        int val;

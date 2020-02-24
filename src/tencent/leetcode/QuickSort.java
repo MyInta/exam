@@ -23,20 +23,20 @@ public class QuickSort {
         //一切顺利的话，整个数组被分割为比pivot小和大两个阵营
         quickSort(array,left,index-1);
         //对后半段阵营继续递归排序
-        quickSort(array,index,right);
+        quickSort(array,index + 1,right);
     }
 
     private static int partition(int[] array, int left, int right, int pivot) {
         //对每个阵营都进行一次全面排序
-        while(left<=right){
-            while(array[left]<pivot){
+        while(left<right){
+            while(left < right && array[left]<pivot){
                 left++;
             }
-            while(array[right]>pivot){
+            while(left < right && array[right]>pivot){
                 right--;
             }
             //直到找到左右各一个值与pivot对比后大于等于和小于等于的，对它们进行交换
-            if(left<=right){
+            if(left<right){
                 swap(array,left,right);
                 left++;
                 right--;
