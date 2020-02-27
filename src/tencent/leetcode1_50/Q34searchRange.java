@@ -61,4 +61,36 @@ public class Q34searchRange {
         //考虑目标大小在数组范围内，但没有该值时
         return nums[right - 1] == target ? right - 1 : -1;
     }
+
+    //2020.2.27
+    //二分找左边界和右边界咯
+//    public int search(int[] nums, int target) {
+//        return findR(nums, target) - findL(nums, target);
+//    }
+//    //返回第一个大于等于target的值所在的索引位置
+//    private int findL(int[] nums, int target) {
+//        int left = 0, right = nums.length;
+//        while (left < right) {
+//            int mid = left + ((right - left) >> 1);
+//            if (nums[mid] >= target) {
+//                right = mid;
+//            } else if (nums[mid] < target) {
+//                left = mid + 1;
+//            }
+//        }
+//        return left;
+//    }
+//    //返回第一个比target大的索引位置
+//    private int findR(int[] nums, int target) {
+//        int left = 0, right = nums.length;
+//        while (left < right) {
+//            int mid = left + ((right - left) >> 1);
+//            if (nums[mid] > target) {
+//                right = mid;
+//            } else if (nums[mid] <= target) {
+//                left = mid + 1;
+//            }
+//        }
+//        return left;
+//    }
 }

@@ -32,7 +32,7 @@ import java.util.*;
  * 节点总数 <= 1000
  *
  */
-public class V32levelOrder {
+public class V32_3levelOrder {
     private class TreeNode{
         int val;
         TreeNode left;
