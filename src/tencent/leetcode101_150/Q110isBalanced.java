@@ -68,4 +68,20 @@ public class Q110isBalanced {
         }
         return lH>rH?lH:rH;
     }
+
+    //20200229 上面不太容易理解，改成这样好理解
+    public boolean isBalanced2(TreeNode root) {
+        if (root == null) return true;
+        if (Math.abs(getDepth(root.left) - getDepth(root.right)) < 2) {
+            //在符合提议内，考虑各自的子树深度差
+            return isBalanced(root.left) && isBalanced(root.right);
+        }
+        //否则，两子树深度差超过1，不符合题意，为false
+        return false;
+    }
+    private int getDepth(TreeNode root) {
+        if (root == null) return 0;
+        //返回树内最大深度
+        return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
+    }
 }

@@ -78,5 +78,22 @@ public class Q3LengthOfLongestSubString {
         }
     }
 
+    //思想，数组保存滑窗内元素信息，遇到数量大于1的，移动右指针，删到数量符合为止，再继续移动右指针
+    public int lengthOfLongestSubstring3(String s) {
+        int[] counts = new int[128];
+        int left = 0, right = 0, len = s.length(), max = 0;
+        while (right < len) {
+            counts[s.charAt(right)] ++;
+            if (counts[s.charAt(right)] > 1) {
+                max = Math.max(max, right - left);
+            }
+            while (counts[s.charAt(right)] > 1) {
+                counts[s.charAt(left ++)] --;
+            }
+            right ++;
+        }
+        max = Math.max(max, right - left);
+        return max;
+    }
 
 }
