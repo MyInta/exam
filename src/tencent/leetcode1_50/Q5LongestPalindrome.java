@@ -83,4 +83,32 @@ public class Q5LongestPalindrome {
         String str = "babadccdabacc";
         q5LongestPalindrome.longestPalindrome(str);
     }
+
+    //dp做
+    public String longestPalindrome2(String s) {
+        if (s.length() < 2) return s;
+        int len = s.length();
+        //回文串可以被取出来的坐标
+        int x = 0;
+        int distance = 1;
+        boolean[][] dp = new boolean[len][len];
+        for (int i = 0; i < len; i ++) {
+            //默认的单个字符为回文串
+            dp[i][i] = true;
+        }
+        for (int j = 1; j < len; j ++) {
+            for (int i = 0; i < j; i ++) {
+                //在前半段，考虑边缘值是否相等
+                dp[i][j] = s.charAt(i) == s.charAt(j) && (j - i < 3 || dp[i + 1][j - 1]);
+                if (dp[i][j]) {
+                    //如果目前为止可行，那么就考虑下回文长度
+                    if (j - i + 1 > distance) {
+                        distance = j - i + 1;
+                        x = i;
+                    }
+                }
+            }
+        }
+        return s.substring(x, x + distance);
+    }
 }
