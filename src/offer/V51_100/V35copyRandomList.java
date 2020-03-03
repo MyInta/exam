@@ -1,55 +1,79 @@
-package tencent.leetcode101_150;
+package offer.V51_100;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author inta
- * @date 2019/10/25
- * @describe 给定一个链表，每个节点包含一个额外增加的随机指针，该指针可以指向链表中的任何节点或空节点。
+ * @date 2020/3/3
+ * @describe 请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，
+ * 每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。
  *
- * 要求返回这个链表的深拷贝。
- * 输入：
- * {"$id":"1","next":{"$id":"2","next":null,"random":{"$ref":"2"},"val":2},"random":{"$ref":"2"},"val":1}
- *
- * 解释：
- * 节点 1 的值是 1，它的下一个指针和随机指针都指向节点 2 。
- * 节点 2 的值是 2，它的下一个指针指向 null，随机指针指向它自己。
  *  
+ *
+ * 示例 1：
+ *
+ *
+ *
+ * 输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+ * 输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
+ * 示例 2：
+ *
+ *
+ *
+ * 输入：head = [[1,1],[2,1]]
+ * 输出：[[1,1],[2,1]]
+ * 示例 3：
+ *
+ *
+ *
+ * 输入：head = [[3,null],[3,0],[3,null]]
+ * 输出：[[3,null],[3,0],[3,null]]
+ * 示例 4：
+ *
+ * 输入：head = []
+ * 输出：[]
+ * 解释：给定的链表为空（空指针），因此返回 null。
+ *  
+ *
  * 提示：
  *
- * 你必须返回给定头的拷贝作为对克隆列表的引用。
+ * -10000 <= Node.val <= 10000
+ * Node.random 为空（null）或指向链表中的节点。
+ * 节点数目不超过 1000 。
+ *  LC138
  */
-public class Q138copyRandomList {
-    private class Node{
+public class V35copyRandomList {
+    private class Node {
         int val;
         Node next;
         Node random;
-        Node () {
+
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
         }
-        Node(int _val, Node _next, Node _random) {
-            this.val = _val;
-            this.next = _next;
-            this.random = _random;
-        }
-    }
-    private HashMap<Node, Node> hm = new HashMap<>();
-    public Node copyRandomList(Node head) {
-        if (head == null) return null;
-        Node newNode = new Node(head.val, null, null);
-        if (hm.containsKey(head)) {
-            return hm.get(head);
-        } else {
-            hm.put(head, newNode);
-        }
-        newNode.next = copyRandomList(head.next);
-        newNode.random = copyRandomList(head.random);
-        return newNode;
     }
 
-    //依据剑指offer题35拷贝链表
-        //网友推荐方法一：将要拷贝的信息存储在map中，然后再在map中依据原链表信息串联各自的结点
-/*    public Node copyRandomList2(Node head) {
+    //递归做法，需要考虑重复操作，理解有难度
+    private Map<Node, Node> map = new HashMap<>();
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        Node dummy = new Node(head.val);
+        if (map.containsKey(head)) {
+            return map.get(head);
+        } else {
+            //如果拷贝信息还没有储存，就往map中新建
+            map.put(head, dummy);
+        }
+        dummy.next = copyRandomList(head.next);
+        dummy.random = copyRandomList(head.random);
+        return dummy;
+    }
+
+    //网友推荐方法一：将要拷贝的信息存储在map中，然后再在map中依据原链表信息串联各自的结点
+    public Node copyRandomList2(Node head) {
         if (head == null) return null;
         Map<Node, Node> hm = new HashMap<>();
         //一遍搭建所有原链表和新结点的关联map映射信息
@@ -67,10 +91,10 @@ public class Q138copyRandomList {
             cur = cur.next;
         }
         return hm.get(head);
-    }*/
+    }
 
     //网友推荐方法二：在原链表每个结点后插入新结点，串联好后再将链表分割为奇偶，返回偶数链表就是我们求解
-/*    public Node copyRandomList3(Node head) {
+    public Node copyRandomList3(Node head) {
         if (head == null) return null;
         Node cur = head;
         //在每个结点后插入它的拷贝值
@@ -109,5 +133,5 @@ public class Q138copyRandomList {
             cur = oldNext;
         }
         return newHead;
-    }*/
+    }
 }
