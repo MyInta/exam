@@ -33,7 +33,7 @@ import java.util.Stack;
  */
 public class V59_2MaxQueue {
 
-    //网友提供的思路，维持一个单调递减栈
+    //网友提供的思路，维持一个单调递增栈
     private LinkedList<Integer> queue;
     private LinkedList<Integer> helper;
     public V59_2MaxQueue() {
@@ -48,7 +48,8 @@ public class V59_2MaxQueue {
 
     public void push_back(int value) {
         queue.offer(value);
-        //维持一个单调递减的队列
+        //维持一个单调递增的队列
+        //因为我们要求的最大值是当前队列里最大值，如果新加入元素比前面元素大，那求最大值时没前面几个元素啥事，删了就好
         while (!helper.isEmpty() && helper.peekLast() < value) {
             //如果队尾元素比当前值小，就一直削掉队尾
             helper.pollLast();
@@ -66,6 +67,38 @@ public class V59_2MaxQueue {
         return pop_f;
     }
 
+
+    //再次做做看
+    class MaxQueue{
+        LinkedList<Integer> queue;
+        LinkedList<Integer> maxValueQueue;
+        //得到队列最大值，维护一个递增栈
+        public MaxQueue() {
+            queue = new LinkedList<>();
+            maxValueQueue = new LinkedList<Integer>();
+        }
+
+        public int max_value() {
+            if (maxValueQueue.isEmpty()) return -1;
+            return maxValueQueue.peek();
+        }
+
+        public void push_back(int value) {
+            //因为我们要求的最大值是当前队列里最大值，如果新加入元素比前面元素大，那求最大值时没前面几个元素啥事，删了就好
+            while (!maxValueQueue.isEmpty() && maxValueQueue.peekLast() < value) {
+                maxValueQueue.pollLast();
+            }
+            queue.add(value);
+            maxValueQueue.add(value);
+        }
+
+        public int pop_front() {
+            if (queue.isEmpty()) return -1;
+            int p = queue.pop();
+            if (p == maxValueQueue.peek()) maxValueQueue.pop();
+            return p;
+        }
+    }
 }
 /**
  * Your MaxQueue object will be instantiated and called as such:
