@@ -39,4 +39,24 @@ public class MyPow {
         }
     }
 
+
+    //快速幂
+    public double myPow2(double x,int n){
+        long N = n;
+        if (N < 0) {
+            N = -N;
+            x = 1 / x;
+        }
+        return fastPow(x, N);
+    }
+    private double fastPow(double x, long n) {
+        if (n == 0) return 1;
+        double half = fastPow(x, n / 2);
+        if ((n & 1) == 1) {
+            return x * half * half;
+        } else {
+            return half * half;
+        }
+    }
+
 }
