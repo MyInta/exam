@@ -1,7 +1,5 @@
 package something;
 
-import tencent.Main;
-
 /**
  * @author inta
  * @date 2020/3/1

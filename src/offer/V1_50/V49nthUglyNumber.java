@@ -1,7 +1,5 @@
 package offer.V1_50;
 
-import tencent.Main;
-
 /**
  * @author inta
  * @date 2020/3/4
