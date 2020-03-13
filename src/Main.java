@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Main {
 
     private class TreeNode {
@@ -24,5 +26,31 @@ public class Main {
             this.next = null;
             this.random = null;
         }
+    }
+
+
+//    int countCharacters(char[] chars, String[] words) {
+//        int[] counts = new int[128];
+//        for (char c : chars) {
+//            counts[c] ++;
+//        }
+//        int res = 0;
+//        for (String word : words) {
+//            int[] temp = Arrays.copyOf(counts, counts.length);
+//            if (valid(word, temp)) res += word.length();
+//        }
+//        return res;
+//    }
+//    private boolean valid(String str, int[] counts) {
+//        for (char c : str.toCharArray()) {
+//            if (counts[c] == 0) return false;
+//            counts[c] --;
+//        }
+//        return true;
+//    }
+
+
+    public static void main(String[] args) {
+
     }
 }
