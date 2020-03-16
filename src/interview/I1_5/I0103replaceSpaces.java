@@ -21,7 +21,24 @@ package interview.I1_5;
  *
  */
 public class I0103replaceSpaces {
-//    public String replaceSpaces(String S, int length) {
-//
-//    }
+    public String replaceSpaces(String S, int length) {
+        char[] sChars = S.toCharArray();
+        int countNull = 0;
+        for (int i = 0; i < length; i ++) {
+            if (sChars[i] == ' ') countNull ++;
+        }
+        //j是真实字符串长度
+        int j = length + 2 * countNull;
+        char[] chars = new char[j];
+        for (int i = length - 1; i >= 0; i --) {
+            if (sChars[i] != ' ') {
+                chars[-- j] = sChars[i];
+            } else {
+                chars[-- j] = '0';
+                chars[-- j] = '2';
+                chars[-- j] = '%';
+            }
+        }
+        return String.valueOf(chars);
+    }
 }
