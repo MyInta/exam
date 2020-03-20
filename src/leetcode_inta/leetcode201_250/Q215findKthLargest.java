@@ -1,5 +1,6 @@
 package leetcode_inta.leetcode201_250;
 
+import java.awt.image.renderable.RenderableImage;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
@@ -123,5 +124,30 @@ public class Q215findKthLargest {
         nums[j] = temp;
     }
 
+
+    //20200320快排，重新整理实现下
+    public int findKthLargest5(int[] nums, int k) {
+        //题意k>1所以省去
+        //if (k == 0) return -1;
+        int target = nums.length - k;
+        int index = partion(nums, 0, nums.length - 1);
+        while (index != target) {
+            index = index > target ? partion(nums, 0, index - 1) : partion(nums, index + 1, nums.length - 1);
+        }
+        return nums[index];
+    }
+    private int partion(int[] nums, int left, int right) {
+        int i = left, j = right + 1, tmp = (int) (left + Math.random() * (right - left + 1));
+        swap(tmp, left, nums);
+        int pivot = nums[left];
+        while (true) {
+            while (i < right && nums[++ i] < pivot);
+            while (j > left && nums[-- j] > pivot);
+            if (i >= j) break;
+            swap(i, j, nums);
+        }
+        swap(left, j, nums);
+        return j;
+    }
 
 }

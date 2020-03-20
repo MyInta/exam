@@ -48,4 +48,48 @@ public class V40getLeastNumbers {
         }
         return res;
     }
+
+
+    //快排思想
+    public int[] getLeastNumbers3(int[] arr, int k) {
+        if (k == 0) return new int[0];
+        target = k - 1;
+        return quickSort(arr, 0, arr.length - 1);
+    }
+    private int target;
+    private int[] quickSort(int[] arr, int left, int right) {
+        //一般是取随机值
+        int index = partion(arr, left, right);
+        if (index == target) {
+            int[] res = new int[target + 1];
+            for (int i = 0; i <= target; i++) {
+                res[i] = arr[i];
+            }
+            return res;
+        } else if (index < target) {
+            return quickSort(arr, index + 1, right);
+        } else {
+            return quickSort(arr, left, index - 1);
+        }
+    }
+
+    private int partion(int[] arr, int left, int right) {
+        int pivot = arr[left];
+        int i = left, j = right + 1;
+        while (true) {
+            while (i < right && arr[++ i] < pivot) {}
+            while (left < j && arr[-- j] > pivot) {}
+            if (i >= j) break;
+            swap(arr, i, j);
+        }
+        swap(arr, left, j);
+        return j;
+    }
+
+    private void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
 }
