@@ -88,4 +88,39 @@ public class Q912sortArray {
         while (j < r.size()) res.add(r.get(j ++));
         return res;
     }
+
+    //现在java题返回类型已经改变了，返回int[]类型，归并的话，中心思想还是没变的
+    public int[] sortArray3(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        sort3(nums, left, right);
+        return nums;
+    }
+    private void sort3(int[] nums, int left, int right) {
+        if (left >= right) return;
+        int mid = left + (right - left) / 2;
+        int[] temp = new int[right - left + 1];
+        sort3(nums, left, mid);
+        sort3(nums, mid + 1, right);
+        int i = left, j = mid + 1, k = 0;
+        while (i <= mid && j <= right) {
+            if (nums[i] <= nums[j]) {
+                temp[k] = nums[i];
+                i ++;
+            } else {
+                temp[k] = nums[j];
+                j ++;
+            }
+            k ++;
+        }
+        while (i <= mid) temp[k ++] = nums[i ++];
+        while (j <= right) temp[k ++] = nums[j ++];
+        for (int index = 0; index < temp.length; index++) {
+            nums[index + left] = temp[index];
+        }
+    }
+
+    //快排 to be continue
+//    public int[] sortArray4(int[] nums) {
+//
+//    }
 }
