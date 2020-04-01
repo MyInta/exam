@@ -1,6 +1,6 @@
 package interview.I16_20;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author inta
@@ -33,7 +33,35 @@ import java.util.List;
  *
  */
 public class I1722findLadders {
-//    public List<String> findLadders(String beginWord, String endWord, List<String> wordList) {
-//
-//    }
+    public List<String> findLadders(String beginWord, String endWord, List<String> wordList) {
+        Queue<List<String>> queue = new LinkedList<>();
+        queue.add(Arrays.asList(new String[]{beginWord}));
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size != 0) {
+                List<String> temp = queue.poll();
+                for (int i = wordList.size() - 1; i >= 0; i--) {
+                    String str = wordList.get(i);
+                    if (check(str, temp.get(temp.size() - 1))) {
+                        //如果当前集合最后一个元素和字典中某个元素匹配度差一个，新建集合添加该元素即可
+                        List<String> newList = new LinkedList<>(temp);
+                        newList.add(str);
+                        if (endWord.endsWith(str)) return newList;
+                        queue.add(newList);
+                        wordList.remove(str);
+                    }
+                }
+                size --;
+            }
+        }
+        return new ArrayList<>();
+    }
+    private boolean check(String str1, String str2) {
+        if (str1.length() != str2.length()) return false;
+        int diff = 0;
+        for (int i = 0; i < str1.length(); i++) {
+            if (str1.charAt(i) != str2.charAt(i) && ++ diff > 1) return false;
+        }
+        return diff == 1;
+    }
 }

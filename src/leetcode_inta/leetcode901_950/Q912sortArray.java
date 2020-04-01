@@ -120,7 +120,33 @@ public class Q912sortArray {
     }
 
     //快排 to be continue
-//    public int[] sortArray4(int[] nums) {
-//
-//    }
+    public int[] sortArray4(int[] nums) {
+        quickSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+    private void quickSort(int[] nums, int left, int right) {
+        if (left >= right) return;
+        int index = partition(nums, left, right);
+        quickSort(nums, left, index - 1);
+        quickSort(nums, index + 1, right);
+    }
+    private int partition(int[] nums, int left, int right) {
+        int random = left + (int)Math.random() * (right - left + 1);
+        swap(nums, left, random);
+        int target = nums[left];
+        int i = left, j = right + 1;
+        while (true) {
+            while (i < right && nums[++ i] < target);
+            while (j > left && nums[-- j] > target);
+            if (i >= j) break;
+            swap(nums, i, j);
+        }
+        swap(nums, left, j);
+        return j;
+    }
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 }
