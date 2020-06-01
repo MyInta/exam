@@ -132,7 +132,7 @@ public class Q146LRUCache {
                 return -1;
             }
             Node node = map.get(key);
-            //用于跟新缓存
+            //用于更新缓存
             put(key, node.val);
             return node.val;
         }

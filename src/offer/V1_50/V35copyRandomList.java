@@ -1,4 +1,4 @@
-package offer.V51_100;
+package offer.V1_50;
 
 import java.util.HashMap;
 import java.util.Map;
