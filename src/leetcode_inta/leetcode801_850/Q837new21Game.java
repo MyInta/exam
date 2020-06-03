@@ -56,4 +56,51 @@ public class Q837new21Game {
         }
         return dp[N] - dp[K - 1];
     }
+
+    //整理思路：最后一次取，必定是在[K,K+W)范围内，胜率在于[K,K+w]中N处于哪里，胜率为获得分数N以下的概率和
+    public double new21Game2(int N, int K, int W) {
+        //由思路，我们先把两种极端给了(题意说K <= N);if (N < K) return 0;不存在
+        if (N > K + W) return 1;
+        double[] dp = new double[K + W]; //取不到K+W
+        double sum = 0;
+        for (int i = K; i < K + W; i++) {
+            //先确定[K,K+W)范围内胜率，小于等于N必定1，否则0
+            dp[i] = i <= N ? 1 : 0;
+            //统计这一次抽取获胜的总胜率和
+            sum += dp[i];
+        }
+        for (int j = K - 1; j >= 0; j--) {
+            //然后W长度窗口左移一格，新的一格获胜的概率是终点胜率基础上，一次抽取1/W的概率累乘，即sum * 1/W
+            dp[j] = sum / W;
+            //此时更新W窗口内胜率和，变为减去最右端胜率，加上新一格胜率之和
+            sum = sum - dp[j + W] + dp[j];
+        }
+        //综上，理解计算胜率的方式，就是维持一个W长度窗口，统计窗口内胜率和SUM，
+        // 然后移动窗口时修改窗口内胜率和，新格子胜率是窗口内胜率基础上抽取一次的结果
+        return dp[0];
+    }
+
+    //又看到一个大神的思路，从头开始计算胜率
+    public double new21Game3(int N, int K, int W) {
+        if (K == 0) return 1;
+        double[] dp = new double[N + 1];
+        dp[0] = 1;
+        //累加W窗口内胜率和
+        double sum = 1;
+        double ans = 0;
+        for (int i = 1; i <= N; i++) {
+            //同上一方法思路，窗口内胜率基础上一次抽取1/W
+            dp[i] = sum / W;
+            //如果没有达到K值限定，那么就是可以不断添加卡牌，也就是把各种分值dp[i]累加起来即可
+            if (i < K) sum += dp[i];
+            //超过W窗口，抽取一次时不一定能涵盖，所以维持W窗口胜率时，需要把最左边取不到的情况去掉
+            if (i >= W) sum -= dp[i - W];
+        }
+        //此时sum是窗口长度W内的胜率和，dp[i]代表分值i取到时候的概率
+        for (int j = K; j <= N; j++) {
+            //那么获得题意得胜率，也就是取得[K,N]区间分值得概率和
+            ans += dp[j];
+        }
+        return ans;
+    }
 }
