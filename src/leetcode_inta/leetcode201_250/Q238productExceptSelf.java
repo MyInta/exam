@@ -34,23 +34,58 @@ public class Q238productExceptSelf {
 //        }
 //        return res;
 //    }
+//    public int[] productExceptSelf(int[] nums) {
+//        int len = nums.length;
+//        int[] inorder = new int[len];
+//        int[] reverse = new int[len];
+//        int[] res = new int[len];
+//        inorder[0] = nums[0];
+//        for (int i = 1; i < len; i++) {
+//            inorder[i] = inorder[i-1]*nums[i];
+//        }
+//        reverse[0] = nums[len - 1];
+//        for (int j = 1; j < len; j++) {
+//            reverse[j] = reverse[j-1]*nums[len-1-j];
+//        }
+//        res[0] = reverse[len - 2];
+//        res[len - 1] = inorder[len - 2];
+//        for (int k = 1; k < len-1; k++) {
+//            res[k] = inorder[k-1]*reverse[len - 2 - k];
+//        }
+//        return res;
+//    }
     public int[] productExceptSelf(int[] nums) {
-        int len = nums.length;
-        int[] inorder = new int[len];
-        int[] reverse = new int[len];
-        int[] res = new int[len];
-        inorder[0] = nums[0];
-        for (int i = 1; i < len; i++) {
-            inorder[i] = inorder[i-1]*nums[i];
+        //创造两个数组A、B，分别保存左边和右边的累乘，nums[i]就是A[i]*B[size - i - 1]
+        int size = nums.length;
+        int[] A = new int[size];
+        int[] B = new int[size];
+        A[0] = 1;
+        B[0] = 1;
+        for (int i = 1; i < size; i++) {
+            A[i] = A[i - 1] * nums[i - 1];
+            B[i] = B[i - 1] * nums[size - i];
         }
-        reverse[0] = nums[len - 1];
-        for (int j = 1; j < len; j++) {
-            reverse[j] = reverse[j-1]*nums[len-1-j];
+        int[] res = new int[size];
+        for (int i = 0; i < size; i++) {
+            res[i] = A[i] * B[size - i - 1];
         }
-        res[0] = reverse[len - 2];
-        res[len - 1] = inorder[len - 2];
-        for (int k = 1; k < len-1; k++) {
-            res[k] = inorder[k-1]*reverse[len - 2 - k];
+        return res;
+    }
+
+    //大神思路是在我上面的精简化，不用数组存储值，而是遍历两边，一遍累乘前缀，一遍累乘后缀
+    public int[] productExceptSelf2(int[] nums) {
+        int[] res = new int[nums.length];
+        //准备的累乘前缀值
+        int k = 1;
+        for (int i = 0; i < nums.length; i++) {
+            res[i] = k;
+            k *= nums[i];
+        }
+        //此时相当于已经把可能的前缀累乘情况放在了结果数组中，这时候从尾部往前乘上后缀
+        k = 1;
+        for (int j = nums.length - 1; j >= 0; j--) {
+            res[j] *= k;
+            k *= nums[j];
         }
         return res;
     }
