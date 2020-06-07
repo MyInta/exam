@@ -80,8 +80,11 @@ public class Main {
 
 
     public static void main(String[] args) {
-        int a = 1;
-        a += Integer.MAX_VALUE - 1;
+        int a = Integer.MIN_VALUE;
+        System.out.println(a);
+        a --;
+        System.out.println(a);
+        a ++;
         System.out.println(a);
     }
 }
