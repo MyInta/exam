@@ -16,9 +16,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int i = 2;
-        i -= 3 - 1 + 5;
-        System.out.println(i);
+        char a = '=';
+        char b = '!';
+        System.out.println(a - b);
     }
 
 
