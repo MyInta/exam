@@ -45,7 +45,7 @@ public class V46translateNum {
     }
 
     //语言精炼点
-    public int translateNum2(int num) {
+    /*public int translateNum2(int num) {
 //        if (num < 10) return 1;
         String numStr = String.valueOf(num);
         int len = numStr.length();
@@ -63,5 +63,73 @@ public class V46translateNum {
             dp[i] = dp[i - 1] + ((n > 9 && n < 26) ? dp[i - 2] : 0);
         }
         return dp[len - 1];
+    }*/
+
+    //[可以从左往右多遍历一位，预设dp[1]为1，比较两位可以直接compareTo("10")以及“25”]
+    public int translateNum2(int num) {
+        String str = String.valueOf(num);
+        int[] dp = new int[str.length() + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= str.length(); i++) {
+            //从头截取两位
+            String cut = str.substring(i - 2, i);
+            if (cut.compareTo("10") >= 0 && cut.compareTo("25") <= 0) {
+                //如果在10-25,说明可以切割两份，前置结果可以从前一个或者前两个位置继承
+                dp[i] = dp[i - 1] + dp[i - 2];
+            } else {
+                dp[i] = dp[i - 1];
+            }
+        }
+        return dp[str.length()];
+    }
+    //[看题解，也可以从右往左遍历找两位，可以减少下面dp[1]的特殊判断]
+    public int translateNum2_2(int num) {
+        String str = String.valueOf(num);
+        int[] dp = new int[str.length() + 1];
+        dp[str.length()] = 1;
+        dp[str.length() - 1] = 1;
+        for (int i = str.length() - 2; i >= 0; i--) {
+            String cut = str.substring(i, i + 2);
+            if (cut.compareTo("10") >= 0 && cut.compareTo("25") <= 0) {
+                //如果在10-25,说明可以切割两份，前置结果可以从前一个或者前两个位置继承
+                dp[i] = dp[i + 1] + dp[i + 2];
+            } else {
+                dp[i] = dp[i + 1];
+            }
+        }
+        return dp[0];
+    }
+    //上述dp还能转化为常数
+    public int translateNum2_3(int num) {
+        String str = String.valueOf(num);
+        int a = 1, b = 1;
+        for (int i = str.length() - 2; i >= 0; i--) {
+            int c;
+            String cut = str.substring(i, i + 2);
+            if (cut.compareTo("10") >= 0 && cut.compareTo("25") <= 0) {
+                //如果在10-25,说明可以切割两份，前置结果可以从前一个或者前两个位置继承
+                c = a + b;
+            } else {
+                c = a;
+            }
+            b = a;
+            a = c;
+        }
+        return a;
+    }
+
+
+    //大神的思路,从后往前，因只有[10,25]存在合并拆分两种情况
+    public int translateNum3(int num) {
+        if (num <= 9) return 1;
+        int resume = num % 100;
+        if (resume <= 9 || resume > 25) {
+            //如果不可以合并，那就是只能一格一格往前推移
+            return translateNum(num / 10);
+        } else {
+            //否则就说明存在分支，多种情况
+            return translateNum(num / 10) + translateNum(num / 100);
+        }
     }
 }
