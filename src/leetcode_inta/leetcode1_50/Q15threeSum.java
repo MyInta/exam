@@ -2,6 +2,7 @@ package leetcode_inta.leetcode1_50;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -55,6 +56,29 @@ public class Q15threeSum {
             while (i < nums.length - 1 && nums[i] == nums[i + 1]) {
                 i++;
             }
+        }
+        return res;
+    }
+
+    public List<List<Integer>> threeSum2(int[] nums) {
+        int size = nums.length;
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        for (int i = 0; i < size - 2; ) {
+            int left = i + 1, right = size - 1;
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum > 0) {
+                    right --;
+                } else if (sum < 0) {
+                    left ++;
+                } else {
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    while (left < right && nums[left] == nums[++left]) {}
+                    while (left < right && nums[right] == nums[--right]) {}
+                }
+            }
+            while (i < size - 2 && nums[i] == nums[++i]) {}
         }
         return res;
     }

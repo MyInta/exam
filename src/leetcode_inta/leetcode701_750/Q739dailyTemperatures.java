@@ -1,5 +1,7 @@
 package leetcode_inta.leetcode701_750;
 
+import java.util.PriorityQueue;
+
 /**
  * @author inta
  * @date 2019/10/15
@@ -52,5 +54,52 @@ public class Q739dailyTemperatures {
             }
         }
         return res;
+    }
+
+    //隔了八个月，重新再做，有别的思路，保持一个优先队列（递增的队列，元素为值与索引）
+    //看了网友的题解，发现我其实没必要用Pair引入k/v形式，只要保存索引信息就可以了，比较值时依索引找T元素
+    public int[] dailyTemperatures3(int[] T) {
+        PriorityQueue<Pair> p = new PriorityQueue<>((a,b)->a.v - b.v);
+        int [] res = new int[T.length];
+        for (int i = T.length - 1; i >= 0; i--) {
+            //注意这里比较的值是小于等于，因为我们找的是最近最大，不相等的情况
+            while (!p.isEmpty() && p.peek().v <= T[i]) {
+                p.poll();
+            }
+            if (!p.isEmpty()) {
+                res[i] = p.peek().i - i;
+            } else {
+                //如果优先队列不存在，也就是没有比当前数大的，添加元素即可
+                res[i] = 0;
+            }
+            //无论上述那种情况，新的节点肯定是要被加进去的，用于给左边新元素进行比较
+            p.add(new Pair(T[i], i));
+        }
+        return res;
+    }
+    private class Pair{
+        int v;
+        int i;
+
+        public int getV() {
+            return v;
+        }
+
+        public void setV(int v) {
+            this.v = v;
+        }
+
+        public int getI() {
+            return i;
+        }
+
+        public void setI(int i) {
+            this.i = i;
+        }
+
+        Pair(int v, int i) {
+            this.v = v;
+            this.i = i;
+        }
     }
 }
