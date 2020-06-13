@@ -49,16 +49,14 @@ public class Q70climbStairs {
     //使用动态规划（感觉是上面记忆递归的推进版本）
     private class Q70climbStairs2{
         public int climbStairs(int n) {
-            if (n == 1) {
-                return 1;
-            }
-            int[] dp = new int[n];
+            if (n <= 0) return 1;
+            int[] dp = new int[n + 1];
             dp[0] = 1;
-            dp[1] = 2;
-            for (int i = 2; i < n; i++) {
+            dp[1] = 1;
+            for (int i = 2; i <= n; i++) {
                 dp[i] = dp[i - 1] + dp[i - 2];
             }
-            return dp[n - 1];
+            return dp[n];
         }
     }
 }
