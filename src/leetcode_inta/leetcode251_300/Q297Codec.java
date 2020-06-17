@@ -92,6 +92,58 @@ public class Q297Codec {
         }
         return head;
     }
+
+
+    private class test {
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            if (root == null) return "";
+            StringBuilder sb = new StringBuilder();
+            sb.append(root.val).append(",");
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+            while (!queue.isEmpty()) {
+                TreeNode tn = queue.poll();
+                if (tn.left == null) {
+                    sb.append("#,");
+                } else {
+                    sb.append(tn.left.val).append(",");
+                    queue.add(tn.left);
+                }
+                if (tn.right == null) {
+                    sb.append("#,");
+                } else {
+                    sb.append(tn.right.val).append(",");
+                    queue.add(tn.right);
+                }
+            }
+            String res = sb.toString();
+            return res.substring(0, res.length() - 1);
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            //考虑空的情况
+            if (data.equals("")) return null;
+            String[] splits = data.split(",");
+            TreeNode root = new TreeNode(Integer.valueOf(splits[0]));
+            //记录字符串数组遍历到的索引位置
+            int index = 1;
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+            while (!queue.isEmpty()) {
+                TreeNode tn = queue.poll();
+                tn.left = splits[index].equals("#") ? null : new TreeNode(Integer.valueOf(splits[index]));
+                if (tn.left != null) queue.add(tn.left);
+                index ++;
+                tn.right = splits[index].equals("#") ? null : new TreeNode(Integer.valueOf(splits[index]));
+                if (tn.right != null) queue.add(tn.right);
+                index ++;
+            }
+            return root;
+        }
+    }
+
 }
 
 // Your Codec object will be instantiated and called as such:

@@ -1,5 +1,7 @@
 package leetcode_inta.leetcode1_50;
 
+import java.util.Arrays;
+
 /**
  * @author inta
  * @date 2019/9/28
@@ -31,5 +33,21 @@ public class Q14longestCommonPrefix {
         return pre;
     }
 
+
+    //上面是八月前写的，对比了下，思路更清晰了，执行代码也不错
+    public String longestCommonPrefix2(String[] strs) {
+        Arrays.sort(strs);
+        StringBuilder sb = new StringBuilder();
+        if (strs.length == 0) return "";
+        String first = strs[0];
+        String last = strs[strs.length - 1];
+        for (int i = 0; i < first.length() && i < last.length(); i++) {
+            if (first.charAt(i) == last.charAt(i)) {
+                sb.append(first.charAt(i));
+            }
+            else break;
+        }
+        return sb.toString();
+    }
 
 }
