@@ -84,4 +84,40 @@ public class Q97isInterleave {
         }
         return dp[s2.length()];
     }
+
+
+    //但其实只要dfs加个memo就可以高效解决问题
+    public boolean isInterleave4(String s1, String s2, String s3) {
+        if (s3.length() != s1.length() + s2.length()) return false;
+        //直觉告诉我，要添加一个记忆模块，防止重复过程造成的时间浪费
+        valid = new int[s1.length() + 1][s2.length() + 1];
+        return dfs(s1, 0, s2, 0, s3, 0);
+    }
+    //0 1 2 0代表未访问， 1可以实现 2不能实现
+    private int[][] valid;
+    private boolean dfs(String s1, int index_s1, String s2, int index_s2, String s3, int index_s3) {
+        if (valid[index_s1][index_s2] != 0) return valid[index_s1][index_s2] == 1;
+        if (index_s3 == s3.length()) return true;
+        if (index_s1 == s1.length()) {
+            valid[index_s1][index_s2] = s3.substring(index_s3).equals(s2.substring(index_s2)) ? 1 : 2;
+            return valid[index_s1][index_s2] == 1;
+        }
+        if (index_s2 == s2.length()) {
+            valid[index_s1][index_s2] = s3.substring(index_s3).equals(s1.substring(index_s1)) ? 1 : 2;
+            return valid[index_s1][index_s2] == 1;
+        }
+        char cur = s3.charAt(index_s3);
+        if (cur != s1.charAt(index_s1) && cur != s2.charAt(index_s2)) {
+            valid[index_s1][index_s2] = 2;
+            return false;
+        }
+        if (cur == s1.charAt(index_s1)) {
+            valid[index_s1][index_s2] = dfs(s1, index_s1 + 1, s2, index_s2, s3, index_s3 + 1)
+                    || (cur == s2.charAt(index_s2) && dfs(s1, index_s1, s2, index_s2 + 1, s3, index_s3 + 1)) ? 1 : 2;
+            return valid[index_s1][index_s2] == 1;
+        } else {
+            valid[index_s1][index_s2] = dfs(s1, index_s1, s2, index_s2 + 1, s3, index_s3 + 1) ? 1 : 2;
+            return valid[index_s1][index_s2] == 1;
+        }
+    }
 }
