@@ -50,7 +50,8 @@ public class Q17letterCombinations {
         for (char ref : getRef) {
             add.append(ref);
             combine(target, start + 1, reflect, add);
-            add.deleteCharAt(add.lastIndexOf(String.valueOf(ref)));
+//            add.deleteCharAt(add.lastIndexOf(String.valueOf(ref)));
+            add.deleteCharAt(add.length() - 1);
         }
     }
 }
