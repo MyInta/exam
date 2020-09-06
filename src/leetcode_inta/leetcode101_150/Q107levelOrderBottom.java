@@ -43,6 +43,7 @@ public class Q107levelOrderBottom {
             this.dept = dept;
         }
     }
+    //很早以前，自己做的思维方式真的很独特，想着使用Pair包裹记录节点层次信息，有点意思
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;
@@ -122,5 +123,23 @@ public class Q107levelOrderBottom {
         if (root.right != null) {
             bfs(root.right, dept + 1, res);
         }
+    }
+
+    public List<List<Integer>> levelOrderBottom4(TreeNode root) {
+        LinkedList<List<Integer>> res = new LinkedList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        if (root != null) queue.add(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> temp = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = queue.poll();
+                temp.add(cur.val);
+                if (cur.left != null) queue.add(cur.left);
+                if (cur.right != null) queue.add(cur.right);
+            }
+            res.addFirst(temp);
+        }
+        return res;
     }
 }
