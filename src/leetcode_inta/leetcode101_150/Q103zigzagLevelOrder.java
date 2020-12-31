@@ -1,9 +1,6 @@
 package leetcode_inta.leetcode101_150;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * @author inta
@@ -91,5 +88,32 @@ public class Q103zigzagLevelOrder {
         }
         solution(res, root.left, dept + 1);
         solution(res, root.right, dept + 1);
+    }
+
+
+    public List<List<Integer>> zigzagLevelOrder3(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        //判断顺序
+        boolean flag = true;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            LinkedList<Integer> list = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode temp = queue.poll();
+                if (flag) {
+                    list.add(temp.val);
+                } else {
+                    list.addFirst(temp.val);
+                }
+                if (temp.left != null) queue.add(temp.left);
+                if (temp.right != null) queue.add(temp.right);
+            }
+            flag = !flag;
+            res.add(list);
+        }
+        return res;
     }
 }

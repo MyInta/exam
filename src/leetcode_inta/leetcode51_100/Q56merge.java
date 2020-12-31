@@ -61,4 +61,23 @@ public class Q56merge {
         }
         return res;
     }
+
+    public int[][] merge2(int[][] intervals) {
+        if (intervals.length == 0) return new int[][]{};
+        List<int[]> list = new ArrayList<>();
+        Arrays.sort(intervals, (a,b)->a[0]==b[0]?Integer.compare(b[1],a[1]) : Integer.compare(a[0],b[0]));
+        int left = intervals[0][0], right = intervals[0][1];
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] > right) {
+                list.add(new int[]{left, right});
+                left = intervals[i][0];
+                right = intervals[i][1];
+            } else {
+                right = Math.max(right, intervals[i][1]);
+            }
+        }
+        //别忘了最后必定有个剩余区间还未加入集合
+        list.add(new int[]{left, right});
+        return list.toArray(new int[list.size()][]);
+    }
 }

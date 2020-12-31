@@ -59,4 +59,16 @@ public class Q70climbStairs {
             return dp[n];
         }
     }
+
+    //一年后再做，这也太基础了
+    public int climbStairs2(int n) {
+        int[] dp = new int[n];
+        if (n == 1) return 1;
+        dp[0] = 1;
+        dp[1] = 2;
+        for (int i = 2; i < n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n - 1];
+    }
 }

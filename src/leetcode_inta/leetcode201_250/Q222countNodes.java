@@ -90,4 +90,10 @@ public class Q222countNodes {
         if (root.right != null) countNodes4(root.right);
         return dfs_sum;
     }
+
+    public int countNodes5(TreeNode root) {
+        if (root == null) return 0;
+        if (root.left == null && root.right == null) return 1;
+        return countNodes(root.left) + countNodes(root.right) + 1;
+    }
 }

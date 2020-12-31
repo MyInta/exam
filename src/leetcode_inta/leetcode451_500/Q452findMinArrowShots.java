@@ -30,6 +30,8 @@ public class Q452findMinArrowShots {
     //网友给出了，解决该问题的本质，贪心算法，按右段排序后，挨个射爆，判断是否需要新箭
     public int findMinArrowShots(int[][] points) {
         int res = 0;
+        //（2020.11.23）后来增加了用例[[-2147483646,-2147483645],[2147483646,2147483647]]，防止溢出，使用Integer.compare方法
+        //Arrays.sort(points, (a,b)->Integer.compare(a[1], b[1]));
         Arrays.sort(points, new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {

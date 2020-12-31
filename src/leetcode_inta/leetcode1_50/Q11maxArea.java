@@ -24,7 +24,7 @@ public class Q11maxArea {
         return res;
     }
 
-    //双指针法
+    //双指针法，为什么可行：两端边界取其中小的一边靠近另一个指针，才有可能增大容量。
     public int maxArea2(int[] height) {
         int res = 0;
         int left = 0;
@@ -34,6 +34,8 @@ public class Q11maxArea {
             if (height[left] < height[right]) {
                 left++;
             } else {
+                //考虑特殊情况，两边相等的时候，为什么移动任何一侧都可行？这里我移动的是右侧
+                //因为想要有新的最大值，两侧中必定得有两个大于边界的值，来满足|n_i-n_j| * |h[n_i]-h[n_j]|>|i-j|*|h[i]-h[j]|
                 right--;
             }
         }

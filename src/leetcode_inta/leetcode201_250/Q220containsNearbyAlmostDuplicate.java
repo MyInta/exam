@@ -60,14 +60,14 @@ public class Q220containsNearbyAlmostDuplicate {
         return false;
     }
 
-    //桶排
+    //桶排,原理就是保存一个窗口，在窗口内找当前元素如果分配到桶中(桶宽度<=t,即[t+1)长度)的索引是否已经有元素，或者与前后两桶元素比较
     public boolean containsNearbyAlmostDuplicate3(int[] nums, int k, int t) {
         //用来存储桶id和对应桶内一个元素
         Map<Long, Long> map = new HashMap<>();
         //不符合题意
         if (k <= 0 || t < 0) return false;
         for (int i = 0; i < nums.length; i ++) {
-            //但要考虑整体元素长度是否超过限值k，下一伦即将超过就减去最前面一个元素所在桶位置内元素
+            //但要考虑整体元素索引差值是否超过限值k(满距离为k+1)，下一伦即将超过就减去最前面一个元素所在桶位置内元素（维持长度k+1的map窗口）
             if (i > k) map.remove(getId(nums[i - k - 1], t + 1));
             long id = getId(nums[i], (long)t + 1);
             //如果该id桶已经有元素，桶内元素差必小于等于t（width - 1），所以直接返回true
@@ -80,7 +80,8 @@ public class Q220containsNearbyAlmostDuplicate {
         }
         return false;
     }
-    //创建一个方法，根据值和区间长度，确定该值的id位置
+    //创建一个方法，根据值和区间长度，确定该值的id位置,这里长度其实是固定的t+1是因为我们的桶长度[t+1)可以满足长度<=t
+    //当负值时，如-3/3 我们应该返回-2同理-2/3返回-1，为此针对java计算方式，需要将负值延伸分母-1的距离才可以做到
     private long getId(long num, long width) {
         return num < 0 ? (num - (width - 1)) / width : num / width;
     }

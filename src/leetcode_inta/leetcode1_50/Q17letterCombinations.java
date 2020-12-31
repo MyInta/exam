@@ -54,4 +54,33 @@ public class Q17letterCombinations {
             add.deleteCharAt(add.length() - 1);
         }
     }
+
+    // 20201230 二刷
+    public List<String> letterCombinations2(String digits) {
+        map = new HashMap<>();
+        char[] keys = {'2', '3', '4', '5', '6', '7', '8', '9'};
+        String[] values = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        for (int i = 0; i < keys.length; i++) {
+            map.put(keys[i], values[i]);
+        }
+        List<String> lists = new ArrayList<>();
+        if (digits.length() == 0) return lists;
+        dfs(lists, new StringBuilder(), 0, digits);
+        return lists;
+    }
+
+    private Map<Character, String> map;
+
+    private void dfs(List<String> lists, StringBuilder sb, int index, String digits) {
+        if (index == digits.length()) {
+            lists.add(sb.toString());
+            return;
+        }
+
+        for (char key : map.get(digits.charAt(index)).toCharArray()) {
+            sb.append(key);
+            dfs(lists, sb, index + 1, digits);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
 }

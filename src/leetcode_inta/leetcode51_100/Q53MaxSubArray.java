@@ -46,5 +46,20 @@ public class Q53MaxSubArray {
         return res;
     }
 
+    //一年后做，发现思路和前面还是一致的
+    public int maxSubArray3(int[] nums) {
+        int res = nums[0], sum = nums[0];
+        int right = 1;
+        while (right < nums.length) {
+            if (sum < 0) {
+                sum = nums[right];
+            } else {
+                sum += nums[right];
+            }
+            res = Math.max(res, sum);
+            right++;
+        }
+        return res;
+    }
 
 }

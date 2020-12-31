@@ -62,26 +62,31 @@ public class Q5LongestPalindrome {
         }
         return res;
     }
-         /*   for (int i = 0; i < pLen.length; i++) {
-                if (pLen[i] == max+1) {
-                    if (max%2 == 0){
-                        int start = i/2 - (max - 1)/2 - 1;
-                        int end = i/2 + (max - 1)/2 + 1;
-                        res = res.substring(start, end);
-                        // System.out.println(start + "-" + end + "偶数:" + res);
-                    } else {
-                        int start = i/2 - (max - 1)/2;
-                        int end = i/2 + (max - 1)/2 + 1;
-                        res = res.substring(start, end);
-                        // System.out.println(start + "-" + end + "奇数:" + res);
-                    }
-                    break;
-                }
-            }*/
     public static void main(String[] args) {
         Q5LongestPalindrome q5LongestPalindrome = new Q5LongestPalindrome();
         String str = "babadccdabacc";
         q5LongestPalindrome.longestPalindrome(str);
+    }
+
+    //只想到了最简单的实现，遍历每个元素，作为中心，或者比较右边相同则作为两中心，往左往右拓展找最长回文串
+    public String longestPalindrome1(String s) {
+        String res = "";
+        for (int i = 0; i < s.length(); i++) {
+            String one = getPalindrome(s, i, i);
+            if (one.length() > res.length()) res = one;
+            if (i > 0 && s.charAt(i) == s.charAt(i - 1)) {
+                one = getPalindrome(s, i - 1, i);
+                if (one.length() > res.length()) res = one;
+            }
+        }
+        return res;
+    }
+    private String getPalindrome(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return s.substring(left+1, right);
     }
 
     //dp做

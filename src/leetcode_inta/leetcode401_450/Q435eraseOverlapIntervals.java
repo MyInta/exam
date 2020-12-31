@@ -59,4 +59,21 @@ public class Q435eraseOverlapIntervals {
         }
         return n - count;
     }
+
+    // 半年前自己能想到右边界排序，还是挺强的，这次自己做用的左边界排序再讨论情况，执行效率竟然比上面高
+    public int eraseOverlapIntervals2(int[][] intervals) {
+        if (intervals.length == 0 || intervals[0].length == 0) return 0;
+        Arrays.sort(intervals, (a,b)->a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+        int right = Integer.MIN_VALUE;
+        int res = 0;
+        for (int[] interval : intervals) {
+            if (interval[0] >= right) {
+                right = interval[1];
+                res++;
+            } else if (interval[1] < right) { // 不要忽略这一处，有可能出现[1,2][2,10000],[3,4],[4,5]的情况
+                right = interval[1];
+            }
+        }
+        return intervals.length - res;
+    }
 }

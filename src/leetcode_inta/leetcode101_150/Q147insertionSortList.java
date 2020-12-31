@@ -89,7 +89,7 @@ public class Q147insertionSortList {
             while (pre.next.val <= head.next.val) {
                 pre = pre.next;
             }
-            //pre此时为需要插入结点左侧位置,先把结点提出来并建立连接
+            //pre此时为需要插入结点左侧位置,先把结点（该节点是head.next）提出来并建立连接
             ListNode head_next = head.next;
             head.next = head_next.next;
             //给前面也建立连接
@@ -97,5 +97,35 @@ public class Q147insertionSortList {
             pre.next = head_next;
         }
         return dummpy.next;
+    }
+
+    //2020.11.20又一次实现，基本思想没变，还是之前总结的比较精炼
+    public ListNode insertionSortList3(ListNode head) {
+        ListNode pre = new ListNode(-1);
+        pre.next = head;
+        ListNode dumpty = pre;
+        ListNode cur = head;
+        while (cur != null) {
+            if (pre.val > cur.val) {
+                //每次从头开始找位置
+                ListNode temp_pre = dumpty;
+                ListNode temp_cur = dumpty.next;
+                while (temp_cur.val <= cur.val && temp_cur != cur) {
+                    temp_pre = temp_cur;
+                    temp_cur = temp_cur.next;
+                }
+                //如果前半段都小于目标值，目标值不用改变位置，否则的话，就是插入操作
+                if (temp_cur.val > cur.val) {
+                    //先切断原先节点前后关系
+                    pre.next = cur.next;
+                    //再进行插入操作
+                    temp_pre.next = cur;
+                    cur.next = temp_cur;
+                }
+            }
+            pre = cur;
+            cur = cur.next;
+        }
+        return dumpty.next;
     }
 }

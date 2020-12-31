@@ -17,6 +17,7 @@ import java.util.Arrays;
  * 1,1,5 → 1,5,1
  */
 public class Q31nextPermutation {
+    //这是在找maxNum_index->从右往左第一个正序索引位置
     public void nextPermutation(int[] nums) {
         if (nums.length == 0) return;
         int maxNum_index = nums.length - 1;
@@ -42,5 +43,22 @@ public class Q31nextPermutation {
             //并且将后面进行排序
             Arrays.sort(nums, maxNum_index, nums.length);
         }
+    }
+
+    //从右往左遍历，每个元素寻找右区域从右往左遍历可以找到的第一个大于其的元素，即可以交换存在下一个排列
+    public void nextPermutation2(int[] nums) {
+        for (int i = nums.length - 1; i >= 0; i--) {
+            for (int j = nums.length - 1; j > i; j--) {
+                if (nums[j] > nums[i]) {
+                    int temp = nums[i];
+                    nums[i] = nums[j];
+                    nums[j] = temp;
+                    //并且右区域需要排序为升序状态（最小值状态）
+                    Arrays.sort(nums, i + 1, nums.length);
+                    return;
+                }
+            }
+        }
+        Arrays.sort(nums);
     }
 }

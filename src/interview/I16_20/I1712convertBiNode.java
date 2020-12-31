@@ -1,6 +1,5 @@
 package interview.I16_20;
 
-import jdk.nashorn.api.tree.Tree;
 
 /**
  * @author inta

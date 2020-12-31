@@ -1,9 +1,6 @@
 package leetcode_inta.leetcode1_50;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author inta
@@ -55,6 +52,29 @@ public class Q3LengthOfLongestSubString {
             res = Math.max(res,temp);
         }
         return res;
+    }
+
+    //保存是否访问过set集合，移动两指针来判断区间
+    public int lengthOfLongestSubstring1(String s) {
+        int left = 0, right = 0, max = 0;
+        Set<Character> set = new HashSet<>();
+        while (right < s.length()) {
+            char target = s.charAt(right);
+            if (set.contains(target)) {
+                max = Math.max(max, right - left);
+                for (int i = left; i < right; i++) {
+                    if (s.charAt(i) == target) {
+                        left = i+1;
+                        break;
+                    }
+                    set.remove(s.charAt(i));
+                }
+            }
+            set.add(target);
+            right++;
+        }
+        max = Math.max(max, right - left);
+        return max;
     }
 
     /**
