@@ -1,5 +1,10 @@
 package leetcode_inta.leetcode201_250;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.PriorityQueue;
+
 /**
  * @author inta
  * @date 2019/10/16
@@ -90,6 +95,27 @@ public class Q239maxSlidingWindow {
         int[] res = new int[n - k + 1];
         for (int i = 0; i < n - k + 1; i ++) {
             res[i] = Math.max(left[i + k - 1], right[i]);
+        }
+        return res;
+    }
+
+    public int[] maxSlidingWindow3(int[] nums, int k) {
+        int[] res = new int[nums.length - k + 1];
+        int index = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b)->b[1]-a[1]);
+        for (int i = 0; i < k; i++) {
+            pq.add(new int[]{i, nums[i]});
+        }
+        for (int i = k; i < nums.length; i++) {
+            res[index++] = pq.peek()[1];
+            int pre = i - k;
+            while (!pq.isEmpty() && pq.peek()[0] <= pre) {
+                pq.poll();
+            }
+            pq.add(new int[]{i, nums[i]});
+        }
+        if (!pq.isEmpty()) {
+            res[index] = pq.peek()[1];
         }
         return res;
     }
