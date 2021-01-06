@@ -21,47 +21,35 @@ public class Q86partition {
             this.val = val;
         }
     }
-    //思路，x节点后面的节点插入到x节点前一个节点后面即可
+
+    // 题意理一理，就是把x节点后的小于x的节点放到x的前面，并保持初始相对位置
     public ListNode partition(ListNode head, int x) {
-        if (head == null || head.next == null) return head;
-        //这个节点用来记录x前一个节点
-        ListNode pre = new ListNode(0);
-        pre.next = head;
-        //用来保存头信息，用以返回链表的时候，可以准确的返回第一个位置
-        ListNode temp_start = pre;
-        //用来记录当前节点
-        ListNode cur = head;
-        //遍历节点找到x节点
-        while (cur != null && cur.val < x) {
+        // 假设的头
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        // pre为到时候首次出现的大于等于x值的节点，用以插入定位
+        ListNode pre = dummy;
+        while (pre.next != null && pre.next.val < x) {
             pre = pre.next;
-            //当前节点后移
-            cur = cur.next;
         }
-        //用来记录需要插入的节点
-        ListNode real_cur = cur;
-        //跳出循环意味着找到x节点cur以及其前一个节点pre 或者是出现空指针的情况
-        if (real_cur != null) {
-            //现在场上有一个pre 他后面是x 然后我们要开始遍历x的后面
-            real_cur = real_cur.next;
-        }
-        while (real_cur != null) {
-            //当当前节点值小于目标值，开始插入操作
-            if (real_cur.val < x) {
-                cur.next = real_cur.next;
-                real_cur.next = pre.next;
-                pre.next = real_cur;
-                //至此x前面的插入完成，我们需要进入下一个遍历
-                pre = real_cur;
-                real_cur = cur.next;
-            } else {
-                //如果是值大于x的，那么将cur移动，保留pre即可
-                cur = cur.next;
-                real_cur = cur.next;
+        // 找出x节点前一节点，以及x所在节点cur
+        ListNode cur = pre.next;
+        // 开始遍历x节点后所有节点，按顺序插入到pre节点后即可
+        while (cur != null && cur.next != null) {
+            // 比较的下一节点
+            ListNode curNext = cur.next;
+            if (curNext.val < x) { // 小于x就插入到前面
+                cur.next = curNext.next;
+                curNext.next = pre.next;
+                pre.next = curNext;
+                // 然后要保持相对位置，pre移动
+                pre = curNext;
+            } else { // 大于等于x就正常往下遍历
+                cur = curNext;
             }
         }
-        return temp_start.next;
+        return dummy.next;
     }
-
 
     public ListNode partition2(ListNode head, int x) {
         ListNode dummy1 = new ListNode(-1);
@@ -73,16 +61,15 @@ public class Q86partition {
                 cur1.next = head;
                 head = head.next;
                 cur1 = cur1.next;
-                cur1.next = null;
             } else {
                 cur2.next = head;
                 head = head.next;
                 cur2 = cur2.next;
-                cur2.next = null;
             }
         }
         //把这前后两段合在一起
         cur1.next = dummy2.next;
+        cur2.next = null;
         return dummy1.next;
     }
 }

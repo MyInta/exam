@@ -1,9 +1,6 @@
 package leetcode_inta.leetcode351_400;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author inta
@@ -101,6 +98,57 @@ public class Q399CalcEquation {
             }
         }
         //走了一遍都没有提前返回答案，说明没有解，即-1.0
+        return -1.0;
+    }
+
+    // 隔了一年还不会做，看来这题型我不够熟练，需要反思
+    public double[] calcEquation2(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        double[] res = new double[queries.size()];
+        // 映射关系表
+        Map<String, HashMap<String, Double>> map = new HashMap<>();
+        // 这里题干说明长度相等
+        for (int i = 0; i < values.length; i++) {
+            List<String> equation = equations.get(i);
+            double value = values[i];
+            createMap(equation, value, map);
+        }
+        // 层次遍历查询值，并赋值
+        for (int j = 0; j < queries.size(); j++) {
+            res[j] = bfs(map, queries.get(j).get(0), queries.get(j).get(1), new HashSet<>());
+        }
+        return res;
+    }
+
+    // 建立映射表
+    private void createMap(List<String> equation, double value, Map<String, HashMap<String, Double>> map) {
+        String first = equation.get(0);
+        String second = equation.get(1);
+        HashMap<String, Double> hashMap = map.getOrDefault(first, new HashMap<>());
+        hashMap.put(second, value);
+        map.put(first, hashMap);
+        hashMap = map.getOrDefault(second, new HashMap<>());
+        hashMap.put(first, 1.0 / value);
+        map.put(second, hashMap);
+    }
+
+    // 层次遍历找寻答案
+    private double bfs(Map<String, HashMap<String, Double>> map, String start, String target, Set<String> set) {
+        if (!map.containsKey(start) || !map.containsKey(target)) {
+            return -1.0;
+        }
+        set.add(start);
+        //直到下一层遍历找到target为止
+        if (map.get(start).containsKey(target)) {
+            return map.get(start).get(target);
+        }
+        for (Map.Entry<String, Double> entry : map.get(start).entrySet()) {
+            if (!set.contains(entry.getKey())) {
+                double cur = bfs(map, entry.getKey(), target, set);
+                if (cur != -1.0) {
+                    return cur * entry.getValue();
+                }
+            }
+        }
         return -1.0;
     }
 }
