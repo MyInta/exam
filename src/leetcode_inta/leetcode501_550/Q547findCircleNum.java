@@ -123,4 +123,50 @@ public class Q547findCircleNum {
         }
     }
 
+    // 隔了一年，可以直接解出来，这次我的路径压缩竟然是放在合并过程，还是【建议用以前】那样放在查找中更易懂
+    public int findCircleNum3(int[][] isConnected) {
+        int n = isConnected.length;
+        // 原先有n个帮派，每个人都是自己的帮主
+        int[] parents = new int[n];
+        for (int i = 0; i < n; i++) {
+            parents[i] = i;
+        }
+        res = n;
+        // 开始比较并且合并，单独的帮派数量增加
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                if (isConnected[i][j] == 1) {
+                    merge3(i, j, parents);
+                }
+            }
+        }
+        return res;
+    }
+
+    private int res;
+
+    // 合并两个帮派
+    private void merge3(int one, int two, int[] parents) {
+        int parentOne = findParent(parents, one);
+        // 如果原来不是一个帮派火并数量减少
+        if (findParent(parents, two) != parentOne) {
+            res--;
+        }
+        int child = two;
+        // 可以选择合入one，或者two，这里用one吧
+        while (parents[child] != parentOne) {
+            int temp = parents[child];
+            parents[child] = parentOne;
+            child = temp;
+        }
+    }
+
+    // 寻找帮派头头
+    private int findParent(int[] parents, int child) {
+        int target = child;
+        while (parents[target] != target) {
+            target = parents[target];
+        }
+        return target;
+    }
 }
