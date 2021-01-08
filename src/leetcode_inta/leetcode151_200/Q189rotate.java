@@ -26,19 +26,19 @@ package leetcode_inta.leetcode151_200;
  * 要求使用空间复杂度为 O(1) 的 原地 算法。
  */
 public class Q189rotate {
-    //旋转各个分段，再整体旋转即可
+    // 旋转各个分段，再整体旋转即可
     public void rotate(int[] nums, int k) {
         if (k == 0 || nums == null || nums.length == 0) return;
         int len = nums.length;
         //k可能非常大，需要先给它消减到长度范围内
         int real_k = k % len;
-        for (int i = 0; i < ((len - real_k) >> 1); i ++) {
+        for (int i = 0; i < ((len - real_k) >> 1); i++) {
             swap(i, len - real_k - i - 1, nums);
         }
-        for (int i = 0; i < (len >> 1); i ++) {
+        for (int i = 0; i < (len >> 1); i++) {
             swap(i, len - i - 1, nums);
         }
-        for (int i = 0; i < (real_k >> 1); i ++) {
+        for (int i = 0; i < (real_k >> 1); i++) {
             swap(i, real_k - i - 1, nums);
         }
 
@@ -50,7 +50,7 @@ public class Q189rotate {
         nums[b] = temp;
     }
 
-    //看了大神的操作，发现可以很简单的
+    // 看了大神的操作，发现可以很简单的
     public void rotate2(int[] nums, int k) {
         if (k == 0 || nums == null || nums.length == 0) return;
         k %= nums.length;
@@ -63,8 +63,32 @@ public class Q189rotate {
             int temp = nums[start];
             nums[start] = nums[end];
             nums[end] = temp;
-            start ++;
-            end --;
+            start++;
+            end--;
+        }
+    }
+
+    // 最简单的实现，就是先旋转两部分[0,nums.length - k],[nums.length - k + 1, nums.length],再整体旋转
+    public void rotate3(int[] nums, int k) {
+        int target = k % nums.length;
+        int mark = nums.length - target;
+        for (int i = 0; i < mark / 2; i++) {
+            int temp = nums[i];
+            nums[i] = nums[mark - i - 1];
+            nums[mark - i - 1] = temp;
+        }
+
+        for (int j = mark; j < mark + (nums.length - mark) / 2; j++) {
+            // System.out.println(nums[j]);
+            int temp = nums[j];
+            nums[j] = nums[nums.length - j - 1 + mark];
+            nums[nums.length - j - 1 + mark] = temp;
+        }
+
+        for (int m = 0; m < nums.length / 2; m++) {
+            int temp = nums[m];
+            nums[m] = nums[nums.length - m - 1];
+            nums[nums.length - m - 1] = temp;
         }
     }
 }
