@@ -32,39 +32,69 @@ public class Q697findShortestSubArray {
     public int findShortestSubArray(int[] nums) {
         int[] counts = new int[50000];
         for (int num : nums) {
-            counts[num] ++;
+            counts[num]++;
         }
-        //key为元素，value为其度值
-        int key = -1, value = -1;
-        //找到度最大的元素是哪个
-        for (int i = 0; i < counts.length; i ++) {
-            if (counts[i] > value) {
-                key = i;
-                value = counts[i];
-            }
+        // value为其度值
+        int value = -1;
+        // 找到度最大
+        for (int num : nums) {
+            value = Math.max(value, num);
         }
         Map<Integer, Integer> left = new HashMap<>();
         Map<Integer, Integer> right = new HashMap<>();
 
-        for (int i = 0; i < nums.length; i ++) {
+        for (int i = 0; i < nums.length; i++) {
             if (counts[nums[i]] == value) {
                 if (!left.containsKey(nums[i])) {
                     left.put(nums[i], i);
                 }
             }
         }
-        for (int i = nums.length - 1; i >= 0; i --) {
+        for (int i = nums.length - 1; i >= 0; i--) {
             if (counts[nums[i]] == value) {
                 if (!right.containsKey(nums[i])) {
                     right.put(nums[i], i);
                 }
             }
         }
-        //此时left和right分别保存了数量重复最多的元素，他们的左右界限情况
+        // 此时left和right分别保存了数量重复最多的元素，他们的左右界限情况
         int res = Integer.MAX_VALUE;
         for (Map.Entry<Integer, Integer> entry : left.entrySet()) {
             res = Math.min(res, right.get(entry.getKey()) - entry.getValue() + 1);
         }
         return res;
+    }
+
+    public int findShortestSubArray2(int[] nums) {
+        // 记录元素在数组中的两端位置
+        Map<Integer, int[]> distance = new HashMap<>();
+        // 记录元素在数组中的数量
+        Map<Integer, Integer> counts = new HashMap<>();
+        // 记录最大值度
+        int max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int value = counts.getOrDefault(nums[i], 0) + 1;
+            max = Math.max(max, value);
+            counts.put(nums[i],  value);
+            if (!distance.containsKey(nums[i])) {
+                int[] temp = new int[2];
+                temp[0] = i;
+                distance.put(nums[i], temp);
+            } else {
+                int[] temp = distance.get(nums[i]);
+                temp[1] = i;
+                distance.put(nums[i], temp);
+            }
+        }
+        // 记录最短连续子数组长度
+        int min = nums.length;
+        for (Map.Entry<Integer, int[]> entry : distance.entrySet()) {
+            if (counts.get(entry.getKey()) == max) {
+                int[] temp = entry.getValue();
+                int dis = temp[1] > temp[0] ? temp[1] - temp[0] + 1 : 1;
+                min = Math.min(min, dis);
+            }
+        }
+        return min;
     }
 }
