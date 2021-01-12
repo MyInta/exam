@@ -39,9 +39,9 @@ public class Q684findRedundantConnection {
 
     private int[] pre;
     public int[] findRedundantConnection(int[][] edges) {
-        //初始化，将各个帮派领导都是自己
+        // 初始化，将各个帮派领导都是自己
         pre = new int[1001];
-        for (int i = 0; i < 1001; i ++) {
+        for (int i = 0; i < 1001; i++) {
             pre[i] = i;
         }
         for (int[] edge : edges) {
@@ -54,14 +54,15 @@ public class Q684findRedundantConnection {
         //如果没找到，没提前返回，就默认返回null
         return new int[0];
     }
-    //找到它的帮主,还需要压缩路径节省时间
+
+    // 找到它的帮主,还需要压缩路径节省时间
     private int find(int n) {
-        //分别记录帮派下面的兄弟，和临时储存的他的一级上级
+        // 分别记录帮派下面的兄弟，和临时储存的他的一级上级
         int child = n, temp;
         while (n != pre[n]) {
             n = pre[n];
         }
-        //此时的n已经是帮派主了，当其一级上级不为boss之前，我们都压缩路径使其指向boss
+        // 此时的n已经是帮派主了，当其一级上级不为boss之前，我们都压缩路径使其指向boss
         while (child != n) {
             //保存其上级
             temp = pre[child];
@@ -71,9 +72,51 @@ public class Q684findRedundantConnection {
         }
         return n;
     }
-    //合并帮派
+
+    // 合并帮派
     private void merge(int a, int b) {
-        //a b两帮派合并 根据题意知我们这边默认假设需要合并的是帮派主不相同的
+        // a b两帮派合并 根据题意知我们这边默认假设需要合并的是帮派主不相同的
         pre[find(a)] = find(b);
+    }
+}
+
+class Q684findRedundantConnection2 {
+    public int[] findRedundantConnection(int[][] edges) {
+        this.parents = new int[edges.length + 1];
+        for (int i = 1; i <= edges.length; i++) {
+            parents[i] = i;
+        }
+        for (int[] edge : edges) {
+            if (find(edge[0]) == find(edge[1])) {
+                return edge; // 卫语句
+            }
+            merge(edge[0], edge[1]);
+        }
+        return new int[0];
+    }
+
+    private int[] parents;
+
+    private void merge(int i, int j) {
+        int parentI = find(i);
+        int parentJ = find(j);
+        if (parentI != parentJ) {
+            parents[parentI] = parentJ;
+        }
+    }
+
+    private int find(int x) {
+        int child = x;
+        int cur = x;
+        int temp;
+        while (cur != parents[cur]) {
+            cur = parents[cur];
+        }
+        while (child != cur) {
+            temp = parents[child];
+            parents[child] = cur;
+            child = temp;
+        }
+        return cur;
     }
 }
