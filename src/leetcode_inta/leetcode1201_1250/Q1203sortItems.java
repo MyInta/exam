@@ -1,6 +1,6 @@
 package leetcode_inta.leetcode1201_1250;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author inta
@@ -35,7 +35,105 @@ import java.util.List;
  * beforeItems[i] 不含重复元素
  */
 public class Q1203sortItems {
-//    public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItems) {
-//
-//    }
+    // 第一次使用邻接表做拓扑排序困难题，思路延续的官解，具体细节自己尝试来实现
+    public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItems) {
+        // 先把没有组接管的项目设置为新的组管理
+        int groupNumber = m;
+
+        for (int i = 0; i < n; i++) {
+            if (group[i] == -1) {
+                group[i] = groupNumber++; // 设置未被管理的项目为新的组，之后把组序号加一
+            }
+        }
+
+        // 获取组的邻接表和项目的邻接表
+        List<Integer>[] groupAdj = new ArrayList[groupNumber];
+        List<Integer>[] itemAdj = new ArrayList[n];
+
+        for (int i = 0; i < groupNumber; i++) {
+            groupAdj[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < n; i++) {
+            itemAdj[i] = new ArrayList<>();
+        }
+
+        // 以及组与项目的入度表
+        int[] groupDegree = new int[groupNumber];
+        int[] itemDegree = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            int curGroup = group[i]; // 当前组号
+
+            for (Integer beforeItem : beforeItems.get(i)) {
+                int beforeGroup = group[beforeItem];
+                if (curGroup != beforeGroup) { // 如果是不相同的组，就建立邻接表关系
+                    groupAdj[beforeGroup].add(curGroup);
+                    groupDegree[curGroup]++;
+                }
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (Integer beforeItem : beforeItems.get(i)) {
+                itemAdj[beforeItem].add(i);
+                itemDegree[i]++;
+            }
+        }
+
+        // 对组和项目进行拓扑排序
+        List<Integer> topoGroup = topoSort(groupAdj, groupDegree, groupNumber);
+        List<Integer> topoItem = topoSort(itemAdj, itemDegree, n);
+        if (topoGroup.size() == 0 || topoItem.size() == 0) { // 若不存在合理的拓扑排序就说明不符合题意的构成
+            return new int[0];
+        }
+
+        // 构建组与项目的一对多映射关系
+        Map<Integer, List<Integer>> group2Item = new HashMap<>();
+        for (Integer item : topoItem) {
+            group2Item.computeIfAbsent(group[item], key -> new ArrayList<>()).add(item);
+        }
+
+        // 往拓扑排序好的组中按照项目拓扑排序进行植入，获得最终答案
+        List<Integer> res = new ArrayList<>();
+        for (Integer tpGroup : topoGroup) {
+            List<Integer> items = group2Item.getOrDefault(tpGroup, new ArrayList<>());
+            res.addAll(items);
+        }
+        return res.stream().mapToInt(Integer::valueOf).toArray();
+    }
+
+    /**
+     *  拓扑排序
+     * @param adj 邻接表
+     * @param degrees 入读表
+     * @param nodes 节点数
+     * @return 返回拓扑排序后的节点列表，如果不构成拓扑排序返回空列表
+     */
+    private List<Integer> topoSort(List<Integer>[] adj, int[] degrees, int nodes) {
+        List<Integer> res = new ArrayList<>();
+        Queue<Integer> queue = new LinkedList<>();
+
+        for (int i = 0; i < degrees.length; i++) {
+            if (degrees[i] == 0) { // 如果入度为零，添加到队列中，准备作为一开始遍历的层级所拥有的节点
+                queue.add(i);
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            Integer temp = queue.poll();
+            res.add(temp);
+            for (Integer next : adj[temp]) { // 通过邻接表遍历该点后需要连接的节点，进行出度
+                degrees[next]--;
+                if (degrees[next] == 0) {
+                    queue.add(next);
+                }
+            }
+        }
+
+        if (res.size() == nodes) { // 如果拓扑排序存在，即可以获取节点数一致的排序列表，否则返回空集合
+            return res;
+        }
+        return new ArrayList<>();
+    }
 }

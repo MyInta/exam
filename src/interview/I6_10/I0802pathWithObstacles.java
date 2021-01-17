@@ -34,6 +34,7 @@ public class I0802pathWithObstacles {
     private int[][] grids;
     private int m;
     private int n;
+
     public List<List<Integer>> pathWithObstacles(int[][] obstacleGrid) {
         this.n = obstacleGrid.length;
         this.m = obstacleGrid[0].length;
@@ -42,6 +43,7 @@ public class I0802pathWithObstacles {
         dfs(0, 0, new boolean[n][m], ans);
         return ans;
     }
+
     private boolean dfs(int row, int col, boolean[][] visited, List<List<Integer>> paths) {
         if (row >= n || col >= m || visited[row][col] || grids[row][col] == 1) return false;
         paths.add(Arrays.asList(row, col));
