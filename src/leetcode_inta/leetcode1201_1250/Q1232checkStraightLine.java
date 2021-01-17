@@ -51,4 +51,17 @@ public class Q1232checkStraightLine {
         }
         return true;
     }
+
+    // 上面思路简单，但是其实搞复杂了，运用数学的方式，判断两者斜率是否相等可以用x1*y2与x2*y1进行判断
+    public boolean checkStraightLine2(int[][] coordinates) {
+        for (int i = 1; i < coordinates.length - 1; i++) {
+            // x1*y2与y1*x2进行判断
+            int left = (coordinates[i - 1][0] - coordinates[i][0]) * (coordinates[i][1] - coordinates[i + 1][1]);
+            int right = (coordinates[i - 1][1] - coordinates[i][1]) * (coordinates[i][0] - coordinates[i + 1][0]);
+            if (left != right) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
