@@ -64,7 +64,6 @@ public class Q1203sortItems {
 
         for (int i = 0; i < n; i++) {
             int curGroup = group[i]; // 当前组号
-
             for (Integer beforeItem : beforeItems.get(i)) {
                 int beforeGroup = group[beforeItem];
                 if (curGroup != beforeGroup) { // 如果是不相同的组，就建立邻接表关系
@@ -83,8 +82,11 @@ public class Q1203sortItems {
 
         // 对组和项目进行拓扑排序
         List<Integer> topoGroup = topoSort(groupAdj, groupDegree, groupNumber);
+        if (topoGroup.size() == 0) { // 若不存在合理的拓扑排序就说明不符合题意的构成
+            return new int[0];
+        }
         List<Integer> topoItem = topoSort(itemAdj, itemDegree, n);
-        if (topoGroup.size() == 0 || topoItem.size() == 0) { // 若不存在合理的拓扑排序就说明不符合题意的构成
+        if (topoItem.size() == 0) {
             return new int[0];
         }
 
