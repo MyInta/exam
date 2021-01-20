@@ -27,11 +27,26 @@ public class Q628maximumProduct {
         return Math.max(nums[0] * nums[1] * nums[nums.length - 1], nums[nums.length - 1] * nums[nums.length - 2] * nums[nums.length - 3]);
     }
 
-    //记录最小的两个和最大的三个，取两者之一(负负正和正正正)
+    // 思考：可能的模式，最大的三个都是整数；都是负数；一个负数；两个负数
+    public int maximumProduct1(int[] nums) {
+        Arrays.sort(nums);
+        // 全是正数和全是负数一样，都是考虑的数组最后三位
+        int allPositiveNumber = nums[nums.length - 1] * nums[nums.length - 2] * nums[nums.length - 3];
+        // 如果最大值是只有一个负数，那说明负数只有一个,且是nums[0]
+        // 不然最大值可以取两个负数和一个正数结合,所以正数取最小的两个即nums[1]和nums[2]
+        // 然而不存在nums[3]的正数，不然直接取三个正数为最大值，故一个负数的情况是长度为3时候全部累乘，已被全正数情况覆盖
+        // int oneNegativeNumber = nums[0] * nums[1] * nums[2];
+        // 如果最大值有两个负数，那么肯定选的是最小的俩个负数和最大的一个正数，他们结合可以成为最大值
+        int twoNegativeNumber = nums[0] * nums[1] * nums[nums.length - 1];
+        // 至此所有可能都已考虑
+        return Math.max(allPositiveNumber, twoNegativeNumber);
+    }
+
+    // 记录最小的两个和最大的三个，取两者之一(负负正和正正正)
     public int maximumProduct2(int[] nums) {
-        //min1最小，min2第二小
+        // min1最小，min2第二小
         int min1 = Integer.MAX_VALUE, min2 = min1;
-        //max1最大,max3第三大
+        // max1最大,max3第三大
         int max1 = Integer.MIN_VALUE, max2 = max1, max3 = max1;
         for (int i = 0; i < nums.length; i ++) {
             //先考虑最大值的保留情况
