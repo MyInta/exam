@@ -43,26 +43,28 @@ import java.util.List;
  * 如果 A.length > 1，那么 A[0] != 0
  */
 public class Q989addToArrayForm {
-    //直接加，需要考虑两种特殊情况A不够用或K不够用
+    // 直接加，需要考虑两种特殊情况A不够用或K不够用
     public List<Integer> addToArrayForm(int[] A, int K) {
         List<Integer> res = new LinkedList<>();
         int high = 0;
-        //用来记录遍历A数组的索引位置
+
+        // 用来记录遍历A数组的索引位置
         int i = A.length - 1;
         while (K > 0) {
-            //考虑A是否到头了
+            // 考虑A是否到头了
             int sum = i >= 0 ? high + A[i] + (K % 10) : high + (K % 10);
-            //升位
+            // 升位
             high = sum / 10;
-            //在首位添加元素
+            // 在首位添加元素
             res.add(0, sum % 10);
-            //K缩减
+            // K缩减
             K /= 10;
-            //A索引缩减
-            i --;
+            // A索引缩减
+            i--;
         }
-        //跳出循环说明K到头了，要考虑A有没有到头，以及high是否为0
-        for (int j = i; j >= 0; j --) {
+
+        // 跳出循环说明K到头了，要考虑A有没有到头，以及high是否为0
+        for (int j = i; j >= 0; j--) {
             int sum = high + A[j];
             high = sum / 10;
             res.add(0, sum % 10);
@@ -71,18 +73,47 @@ public class Q989addToArrayForm {
         return res;
     }
 
-    //大神就是大神，在我考虑使用一个变量记录高位的时候，他直接利用K来取代高位计算
-    //不过我的方法更普具有遍性，他们是因为题意 0 <= K <= 10000，没考虑K为大数
+    // 评论区的大神，在我考虑使用一个变量记录高位的时候，他直接利用K来取代高位计算
     public List<Integer> addToArrayForm2(int[] A, int K) {
+        int cur = K;
         List<Integer> res = new LinkedList<>();
         int i = A.length - 1;
-        while (i >= 0 || K > 0) {
+        while (i >= 0 || cur > 0) {
             if (i >= 0) {
-                K += A[i];
+                cur += A[i];
             }
-            res.add(0, K % 10);
+            res.add(0, cur % 10);
+            cur /= 10;
+            i--;
+        }
+        return res;
+    }
+
+    // 时隔一年后来做，思路顺畅许多
+    public List<Integer> addToArrayForm3(int[] A, int K) {
+        List<Integer> res = new LinkedList<>();
+        // more为进位时候的值，如8+9=17时候，more记录1
+        int more = 0;
+
+        // 从字符串最后往前遍历
+        for (int i = A.length - 1; i >= 0; i--) {
+            int sum = A[i] + (K % 10) + more;
+            res.add(0, sum % 10); // 这里可以不在首位添加，但最后返回答案记得reverse反转
+            more = sum / 10;
             K /= 10;
-            i --;
+        }
+
+        // 考虑A数组遍历完后，K仍有余
+        while (K != 0) {
+            int sum = more + (K % 10);
+            res.add(0, sum % 10);
+            more = sum / 10;
+            K /= 10;
+        }
+
+        // 极端情况，A和K都遍历好了，但是还有进位值more，这时候要往前新开辟一个位置,如999+1=1000
+        if (more != 0) {
+            res.add(0, more);
         }
         return res;
     }
