@@ -17,7 +17,9 @@ package leetcode_inta.leetcode651_700;
  * 输出: 1
  * 解释: 最长连续递增序列是 [2], 长度为1。
  * 注意：数组长度不会超过10000。
- *
+ * 提示：
+ * 0 <= nums.length <= 10^4
+ * -10^9 <= nums[i] <= 10^9
  */
 public class Q674findLengthOfLCIS {
     public int findLengthOfLCIS(int[] nums) {
@@ -25,7 +27,7 @@ public class Q674findLengthOfLCIS {
         long little = Long.MIN_VALUE;
         int count = 0;
         for (int num : nums) {
-            //如果递增就添加数值，否则重置
+            // 如果递增就添加数值，否则重置
             if (num > little) {
                 count ++;
             } else {
@@ -35,5 +37,21 @@ public class Q674findLengthOfLCIS {
             little = num;
         }
         return Math.max(res, count);
+    }
+
+    // 这不就是双指针吗？
+    public int findLengthOfLCIS2(int[] nums) {
+        int left = 0;
+        int right = 1;
+        int max = 0;
+        while (left < nums.length) {
+            while (right < nums.length && nums[right] > nums[right - 1]) {
+                right++;
+            }
+            max = Math.max(max, right - left);
+            left = right;
+            right++;
+        }
+        return max;
     }
 }
