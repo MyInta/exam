@@ -67,8 +67,8 @@ public class Q1489findCriticalAndPseudoCriticalEdges {
             unionFind = new UnionFind(n);
             int value = 0;
             for (int j = 0; j < m; j++) {
-                if (i != j && unionFind.merge(preEdges[i][0], preEdges[i][1])) {
-                    value += preEdges[i][2];
+                if (i != j && unionFind.merge(preEdges[j][0], preEdges[j][1])) {
+                    value += preEdges[j][2];
                 }
             }
             // 判断是否形成一颗树，且值和最小值匹配
@@ -82,8 +82,8 @@ public class Q1489findCriticalAndPseudoCriticalEdges {
             unionFind.merge(preEdges[i][0], preEdges[i][1]);
             value = preEdges[i][2]; // 直接取该边，并添加其权重
             for (int j = 0; j < m; j++) {
-                if (i != j && unionFind.merge(preEdges[i][0], preEdges[i][1])) {
-                    value += preEdges[i][2];
+                if (i != j && unionFind.merge(preEdges[j][0], preEdges[j][1])) {
+                    value += preEdges[j][2];
                 }
             }
             // 判断是否形成树(不用判断，前面关键边已剔除该可能)，且值和最小树一致，=

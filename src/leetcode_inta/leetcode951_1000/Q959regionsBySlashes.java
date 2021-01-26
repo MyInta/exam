@@ -62,25 +62,24 @@ public class Q959regionsBySlashes {
         for (int i = 0; i < len; i++) {
             int count = 0;
             for (int j = 0; j < grid[i].length(); j++) {
-                int cur = i * len + count;
+                int cur = (i * len + count) * 4;
                 if (grid[i].charAt(j) == '/') {
-                    unionFind.merge(cur * 4, cur * 4 + 3);
-                    unionFind.merge(cur * 4 + 1, cur * 4 + 2);
-
+                    unionFind.merge(cur, cur + 3);
+                    unionFind.merge(cur + 1, cur + 2);
                 } else if (grid[i].charAt(j) == '\\') {
-                    j++;
-                    unionFind.merge(cur * 4, cur * 4 + 1);
-                    unionFind.merge(cur * 4 + 2, cur * 4 + 3);
+                    // j++;
+                    unionFind.merge(cur, cur + 1);
+                    unionFind.merge(cur + 2, cur + 3);
                 } else {
-                    unionFind.merge(cur * 4, cur * 4 + 1);
-                    unionFind.merge(cur * 4 + 2, cur * 4 + 3);
-                    unionFind.merge(cur * 4, cur * 4 + 2);
+                    unionFind.merge(cur, cur + 1);
+                    unionFind.merge(cur + 2, cur + 3);
+                    unionFind.merge(cur, cur + 2);
                 }
                 if (count > 0) {
-                    unionFind.merge((cur - 1) * 4 + 1, cur * 4 + 3);
+                    unionFind.merge(cur - 4 + 1, cur + 3);
                 }
                 if (i > 0) {
-                    unionFind.merge((cur - len) * 4 + 2, cur * 4);
+                    unionFind.merge(cur - len * 4 + 2, cur);
                 }
                 count++;
             }
