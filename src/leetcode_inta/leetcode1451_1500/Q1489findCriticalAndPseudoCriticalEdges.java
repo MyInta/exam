@@ -34,7 +34,7 @@ import java.util.List;
  * 所有 (fromi, toi) 数对都是互不相同的。
  */
 public class Q1489findCriticalAndPseudoCriticalEdges {
-    // 看了官方题解才有思路，还是太菜了，按照kruskal算法思想(内涵并查集作工具)分三步走
+    // 看了官方题解才有思路，还是太菜了，按照kruskal算法思想(内含并查集作工具)分三步走
     public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
         // 预处理，用于后续定位边的编号
         int m = edges.length;
