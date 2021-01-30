@@ -1,9 +1,6 @@
 package leetcode_inta.leetcode751_800;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author inta
@@ -72,6 +69,44 @@ public class Q778swimInWater {
             max = Math.max(max, edge[0]);
         }
         return max;
+    }
+
+    // 也可以空间换时间，使用数组保存遍历过的状态
+    public int swimInWater2(int[][] grid) {
+        int n = grid.length;
+        int[][] grid_clone = new int[n][];
+        for (int i = 0; i < n; i++) {
+            grid_clone[i] = Arrays.copyOf(grid[i], n);
+        }
+        int target = Math.max(grid_clone[0][0], grid_clone[n - 1][n - 1]);
+        while(true){
+            dfs(0, 0, grid_clone, target + 1);
+            if (grid_clone[n - 1][n - 1] == target + 1) {
+                break;
+            }
+            target++;
+        }
+        return target;
+    }
+
+    // 深度遍历，四周遇到小于target的目标可继续延伸，并修正其值为target
+    private void dfs(int x, int y, int[][] grid, int target) {
+        if (grid[x][y] >= target) {
+            return;
+        }
+        grid[x][y] = target;
+        if (x > 0) {
+            dfs(x - 1, y, grid, target);
+        }
+        if (y > 0) {
+            dfs(x, y - 1, grid, target);
+        }
+        if (x < grid.length - 1) {
+            dfs(x + 1, y, grid, target);
+        }
+        if (y < grid[0].length - 1) {
+            dfs(x, y + 1, grid, target);
+        }
     }
 
     private class UnionFind {
