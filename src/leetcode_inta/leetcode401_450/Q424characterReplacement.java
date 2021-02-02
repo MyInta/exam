@@ -68,4 +68,21 @@ public class Q424characterReplacement {
         }
         return res;
     }
+
+    // 参考官解，优化重复计算
+    public int characterReplacement3(String s, int k) {
+        int windowMax = 0;
+        int left = 0;
+        int right = 0;
+        int[] counts = new int[127];
+        int res = 0;
+        for (; right < s.length(); right++) {
+            counts[s.charAt(right)]++;
+            windowMax = Math.max(windowMax, counts[s.charAt(right)]);
+            if (right - left + 1 - windowMax > k) {
+                counts[s.charAt(left++)]--;
+            }
+        }
+        return right - left;
+    }
 }
