@@ -60,7 +60,7 @@ public class Q424characterReplacement {
         for (int i = 0; i < s.length(); i++) {
             counts[s.charAt(i)]++;
             windowMax = Math.max(windowMax, counts[s.charAt(i)]);
-            while (i - index + 1 - windowMax > k) {
+            if (i - index + 1 - windowMax > k) {
                 counts[s.charAt(index)]--;
                 index++;
             }
