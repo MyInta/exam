@@ -32,7 +32,7 @@ package leetcode_inta.leetcode851_900;
  * 保证爱丽丝与鲍勃的糖果总量不同。
  * 答案肯定存在。
  */
-public class QfairCandySwap {
+public class Q888fairCandySwap {
     // 思路：分别求的A、B的总和sumA sumB，找出B[j]-A[i]==(sumB-sumA) / 2即为解
     public int[] fairCandySwap(int[] A, int[] B) {
         int[] res = new int[2];
