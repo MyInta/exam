@@ -75,7 +75,6 @@ public class Q424characterReplacement {
         int left = 0;
         int right = 0;
         int[] counts = new int[127];
-        int res = 0;
         for (; right < s.length(); right++) {
             counts[s.charAt(right)]++;
             windowMax = Math.max(windowMax, counts[s.charAt(right)]);
