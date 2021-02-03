@@ -32,4 +32,17 @@ public class Q643findMaxAverage {
         }
         return res * 1.0 / k;
     }
+
+    public double findMaxAverage2(int[] nums, int k) {
+        int[] counts = new int[nums.length];
+        counts[0] = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            counts[i] += counts[i - 1] + nums[i];
+        }
+        double maxAvg = 1.0 * counts[k - 1] / k;
+        for (int j = k; j < nums.length; j++) {
+            maxAvg = Math.max(maxAvg, 1.0 * (counts[j] - counts[j - k]) / k);
+        }
+        return maxAvg;
+    }
 }
