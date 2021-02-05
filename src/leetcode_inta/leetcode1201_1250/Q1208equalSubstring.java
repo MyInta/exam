@@ -47,4 +47,24 @@ public class Q1208equalSubstring {
         }
         return maxLen;
     }
+
+    // 如果维持当前遍历到的最大窗口，只有遇到窗口内消耗值大于目标值时才对右拓展，可以减少每次滑动对左指针的移动计算量
+    public int equalSubstring2(String s, String t, int maxCost) {
+        int[] counts = new int[s.length()];
+        for (int i = 0; i < s.length(); i++) {
+            counts[i] = Math.abs(t.charAt(i) - s.charAt(i));
+        }
+        int left = 0;
+        int right = 0;
+        int cur = 0;
+        while (right < t.length()) {
+            cur += counts[right];
+            if (cur > maxCost) {
+                cur -= counts[left];
+                left++;
+            }
+            right++;
+        }
+        return right - left;
+    }
 }
