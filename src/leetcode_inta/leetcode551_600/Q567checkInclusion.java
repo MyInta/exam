@@ -80,7 +80,7 @@ public class Q567checkInclusion {
         return false;
     }
 
-    //优秀的思路，应该是如使用滑窗 5ms！
+    // 优秀的思路，应该是如使用滑窗 5ms！
     public boolean checkInclusion3(String s1, String s2) {
         int[] s1map = new int[26];
         int[] s2map = new int[26];
@@ -98,11 +98,36 @@ public class Q567checkInclusion {
         }
         return isMatched(s1map, s2map);
     }
-    //匹配下，两个数组是否值都一致
+    // 匹配下，两个数组是否值都一致或者直接用Arrays.equal()判断
     private boolean isMatched(int[] a, int[] b) {
         for (int i = 0; i < a.length; i++) {
             if (a[i] != b[i]) return false;
         }
         return true;
+    }
+
+    // 使用双指针来解题，思路是找区间内统计数量符合要求长度为s1长度的区间 3ms 超越99.88%
+    public boolean checkInclusion4(String s1, String s2) {
+        int n = s1.length();
+        int m = s2.length();
+        int[] counts = new int[127];
+        for (char c : s1.toCharArray()) {
+            counts[c]--;
+        }
+        int left = 0;
+        int right = 0;
+        while (right < m) {
+            char temp = s2.charAt(right);
+            counts[temp]++;
+            while (counts[temp] > 0) {
+                counts[s2.charAt(left)]--;
+                left++;
+            }
+            if (right - left + 1 == n) {
+                return true;
+            }
+            right++;
+        }
+        return false;
     }
 }
