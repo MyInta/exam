@@ -6,12 +6,9 @@ import java.util.PriorityQueue;
  * @author inta
  * @date 2020/2/14
  * @describe 设计一个找到数据流中第K大元素的类（class）。注意是排序后的第K大元素，不是第K个不同的元素。
- *
  * 你的 KthLargest 类需要一个同时接收整数 k 和整数数组nums 的构造器，
  * 它包含数据流中的初始元素。每次调用 KthLargest.add，返回当前数据流中第K大的元素。
- *
  * 示例:
- *
  * int k = 3;
  * int[] arr = [4,5,8,2];
  * KthLargest kthLargest = new KthLargest(3, arr);
@@ -25,30 +22,35 @@ import java.util.PriorityQueue;
  *
  */
 public class Q703KthLargest {
+    private PriorityQueue<Integer> pq;
+    private int k;
 
-    //维护一个最大优先数组就可以了吧
-    private PriorityQueue<Integer> p;
-    private int K;
     public Q703KthLargest(int k, int[] nums) {
-        p = new PriorityQueue<>((a,b)->a - b);
-        this.K = k;
-        for (int num : nums) {
-            p.add(num);
-            //因为题意k>=1，所以我没担心p空指针
-            if (p.size() > K) {
-                p.poll();
+        this.pq = new PriorityQueue<>();
+        this.k = k;
+        for (int i = 0; i < k && i < nums.length; i++) {
+            pq.add(nums[i]);
+        }
+        for (int j = k; j < nums.length; j++) {
+            if (nums[j] <= pq.peek()) {
+                continue;
             }
+            pq.add(nums[j]);
+            pq.poll();
         }
     }
 
     public int add(int val) {
-        if (p.size() < K) {
-            p.add(val);
-        } else if (p.peek() < val) {
-            p.poll();
-            p.add(val);
+        if (pq.size() < k) {
+            pq.add(val);
+            return pq.peek();
         }
-        return p.peek();
+        if (val <= pq.peek()) {
+            return pq.peek();
+        }
+        pq.add(val);
+        pq.poll();
+        return pq.peek();
     }
 }
 
