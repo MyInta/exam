@@ -30,12 +30,12 @@ public class Q992subarraysWithKDistinct {
         int res = 0;
         int[] counts = new int[A.length + 1];
         int dif = 0;
-        for (int i = 0; i < A.length; i++) {
+        for (int i = 0; i <= A.length; i++) {
             if (dif == K) {
                 cur = from;
-                for (; cur <= i; cur++) {
-                    res++;
+                for (; cur < i; cur++) {
                     if (counts[A[cur]]-- == 1) {
+                        res += cur - from + 1;
                         break;
                     }
                 }
@@ -44,7 +44,7 @@ public class Q992subarraysWithKDistinct {
                     counts[A[j]]++;
                 }
             }
-            if (counts[A[i]]++ == 0) {
+            if (i < A.length && counts[A[i]]++ == 0) {
                 dif++;
             }
             if (dif > K) {
@@ -54,14 +54,6 @@ public class Q992subarraysWithKDistinct {
                         from = j + 1;
                         break;
                     }
-                }
-            }
-        }
-        if (dif == K) {
-            for (; from <= A.length; from++) {
-                res++;
-                if (counts[A[from]]-- == 1) {
-                    break;
                 }
             }
         }
