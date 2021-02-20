@@ -1,5 +1,6 @@
 package leetcode_inta.leetcode651_700;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,8 +38,8 @@ public class Q697findShortestSubArray {
         // value为其度值
         int value = -1;
         // 找到度最大
-        for (int num : nums) {
-            value = Math.max(value, num);
+        for (int count : counts) {
+            value = Math.max(value, count);
         }
         Map<Integer, Integer> left = new HashMap<>();
         Map<Integer, Integer> right = new HashMap<>();
@@ -65,6 +66,7 @@ public class Q697findShortestSubArray {
         return res;
     }
 
+    // 30ms，比前面效率低
     public int findShortestSubArray2(int[] nums) {
         // 记录元素在数组中的两端位置
         Map<Integer, int[]> distance = new HashMap<>();
@@ -96,5 +98,38 @@ public class Q697findShortestSubArray {
             }
         }
         return min;
+    }
+
+    // 199 ms 执行效率挺低，不过是一个新的思路
+    public int findShortestSubArray3(int[] nums) {
+        int[] counts = new int[50001];
+        int[][] rang = new int[counts.length][2];
+        for (int[] r : rang) {
+            Arrays.fill(r, -1);
+        }
+        int max = 1;
+        for (int num : nums) {
+            counts[num]++;
+        }
+        for (int count : counts) {
+            max = Math.max(max, count);
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (rang[nums[i]][0] == -1) {
+                rang[nums[i]][0] = i;
+            }
+        }
+        for (int j = nums.length - 1; j >= 0; j--) {
+            if (rang[nums[j]][1] == -1) {
+                rang[nums[j]][1] = j;
+            }
+        }
+        int res = nums.length;
+        for (int k = 0; k < counts.length; k++) {
+            if (counts[k] == max) {
+                res = Math.min(res, rang[k][1] - rang[k][0] + 1);
+            }
+        }
+        return res;
     }
 }
