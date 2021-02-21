@@ -1,18 +1,15 @@
 package leetcode_inta.leetcode1401_1450;
 
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 /**
  * @author inta
  * @date 2020/6/11
- * @describe 给你一个整数数组 nums ，和一个表示限制的整数 limit，请你返回最长连续子数组的长度，该子数组中的任意两个元素之间的绝对差必须小于或者等于 limit 。
- *
+ * @describe 给你一个整数数组 nums ，和一个表示限制的整数 limit，请你返回最长连续子数组的长度，
+ * 该子数组中的任意两个元素之间的绝对差必须小于或者等于 limit 。
  * 如果不存在满足条件的子数组，则返回 0 。
- *
- *
- *
  * 示例 1：
- *
  * 输入：nums = [8,2,4,7], limit = 4
  * 输出：2
  * 解释：所有子数组如下：
@@ -27,22 +24,14 @@ import java.util.PriorityQueue;
  * [4,7] 最大绝对差 |4-7| = 3 <= 4.
  * [7] 最大绝对差 |7-7| = 0 <= 4.
  * 因此，满足题意的最长子数组的长度为 2 。
- *
  * 示例 2：
- *
  * 输入：nums = [10,1,2,4,7,2], limit = 5
  * 输出：4
  * 解释：满足题意的最长子数组是 [2,4,7,2]，其最大绝对差 |2-7| = 5 <= 5 。
- *
  * 示例 3：
- *
  * 输入：nums = [4,2,2,2,4,4,2,2], limit = 0
  * 输出：3
- *
- *
- *
  * 提示：
- *
  *     1 <= nums.length <= 10^5
  *     1 <= nums[i] <= 10^9
  *     0 <= limit <= 10^9
@@ -68,5 +57,57 @@ public class Q1438longestSubarray {
             left ++;
         }
         return res;
+    }
+
+    public int longestSubarray2(int[] nums, int limit) {
+        int left = 0;
+        int right = 0;
+        int maxDif = 0;
+        PriorityQueue<Integer> pqmax = new PriorityQueue<>((a,b)->(b - a));
+        PriorityQueue<Integer> pqmin = new PriorityQueue<>();
+        while (right < nums.length) {
+            pqmax.add(nums[right]);
+            pqmin.add(nums[right]);
+            while (pqmax.peek() - pqmin.peek() > limit) {
+                pqmin.remove(nums[left]);
+                pqmax.remove(nums[left]);
+                left++;
+            }
+            maxDif = Math.max(maxDif, right - left + 1);
+            right++;
+        }
+        maxDif = Math.max(maxDif, right - left);
+        return maxDif;
+    }
+
+    // 单调队列+保持窗口推动
+    public int longestSubarray3(int[] nums, int limit) {
+        int left = 0;
+        int right = 0;
+        // 维护两个单调队列
+        LinkedList<Integer> maxLink = new LinkedList<>();
+        LinkedList<Integer> minLink = new LinkedList<>();
+        while (right < nums.length) {
+            while (!maxLink.isEmpty() && nums[maxLink.peekLast()] < nums[right]) {
+                maxLink.pollLast();
+            }
+            maxLink.add(right);
+            while (!minLink.isEmpty() && nums[minLink.peekLast()] > nums[right]) {
+                minLink.pollLast();
+            }
+            minLink.add(right);
+            if (nums[maxLink.peek()] - nums[minLink.peek()] > limit) {
+                // 如果越界，需要考虑维护单调队列
+                if (maxLink.peek() <= left) {
+                    maxLink.poll();
+                }
+                if (minLink.peek() <= left) {
+                    minLink.poll();
+                }
+                left++;
+            }
+            right++;
+        }
+        return right - left;
     }
 }
