@@ -23,20 +23,13 @@ package leetcode_inta.leetcode1501_1550;
 public class Q1052maxSatisfied {
     // X窗口内，顾客最大值
     public int maxSatisfied(int[] customers, int[] grumpy, int X) {
-        if (X >= customers.length) {
-            int tempRes = 0;
-            for (int customer : customers) {
-                tempRes += customer;
-            }
-            return tempRes;
-        }
-
         int res = 0;
         for (int i = 0; i < customers.length; i++) {
             res += grumpy[i] == 0 ? customers[i] : 0;
         }
         int left = 0;
         int right = 0;
+        // 找到X范围内店老板生气时气跑的客人数量
         int curSum = 0;
         int tempX = X;
         while (tempX > 0) {
@@ -45,6 +38,11 @@ public class Q1052maxSatisfied {
             right++;
         }
 
+        if (X >= customers.length) {
+            return res + curSum;
+        }
+
+        // 滑窗找X范围内，可以气跑的客人数量最大值
         int curMax = curSum;
         while (right < customers.length) {
             curSum += grumpy[right] == 0 ? 0 : customers[right];
