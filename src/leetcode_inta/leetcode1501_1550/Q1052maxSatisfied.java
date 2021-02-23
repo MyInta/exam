@@ -53,4 +53,24 @@ public class Q1052maxSatisfied {
         }
         return res + curMax;
     }
+
+    // 评论区的简洁版，简化了grumpy的01判断，以及指针变量数
+    public int maxSatisfied2(int[] customers, int[] grumpy, int X) {
+        int curSum = 0;
+        for (int i = 0; i < X; i++) {
+            curSum += customers[i] * grumpy[i];
+        }
+
+        int res = curSum;
+        for (int i = X; i < customers.length; i++) {
+            curSum += customers[i] * grumpy[i] - customers[i - X] * grumpy[i - X];
+            res = Math.max(res, curSum);
+        }
+
+        // 此时已获取到了整个customers区间内在连续X分钟可能被气跑的顾客最大数量res
+        for (int j = 0; j < customers.length; j++) {
+            res += customers[j] * (grumpy[j] ^ 1);
+        }
+        return res;
+    }
 }
