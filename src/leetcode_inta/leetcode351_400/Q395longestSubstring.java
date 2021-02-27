@@ -69,6 +69,10 @@ public class Q395longestSubstring {
         while (start < end && counts[chars[end - 1]] < k) {
             end--;
         }
+        // 剪枝
+        if (end - start < k) {
+            return 0;
+        }
         for (int j = start + 1; j < end - 1; j++) {
             if (counts[chars[j]] < k) {
                 return Math.max(getMax(chars, k, 0, j), getMax(chars, k, j + 1, end));
