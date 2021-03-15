@@ -7,9 +7,7 @@ import java.util.List;
  * @author inta
  * @date 2019/9/28
  * @describe 给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
- *
  * 示例 1:
- *
  * 输入:
  * [
  *  [ 1, 2, 3 ],
@@ -18,7 +16,6 @@ import java.util.List;
  * ]
  * 输出: [1,2,3,6,9,8,7,4,5]
  * 示例 2:
- *
  * 输入:
  * [
  *   [1, 2, 3, 4],
@@ -26,7 +23,6 @@ import java.util.List;
  *   [9,10,11,12]
  * ]
  * 输出: [1,2,3,4,8,12,11,10,9,5,6,7]
- *
  */
 public class Q54spiralOrder {
     public List<Integer> spiralOrder(int[][] matrix) {
@@ -59,6 +55,38 @@ public class Q54spiralOrder {
                 res.add(matrix[i][left]);
             }
             if (++left == right) break;
+        }
+        return res;
+    }
+
+    public List<Integer> spiralOrder2(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int left = 0;
+        int right = n - 1;
+        int top = 0;
+        int bottom = m - 1;
+        List<Integer> res = new ArrayList<>();
+        while (left <= right && top <= bottom) {
+            for (int i = left; i <= right; i++) {
+                res.add(matrix[top][i]);
+            }
+            for (int i = top + 1; i <= bottom; i++) {
+                res.add(matrix[i][right]);
+            }
+            right--;
+            top++;
+            if (left > right || top > bottom) {
+                break;
+            }
+            for (int j = right; j >= left; j--) {
+                res.add(matrix[bottom][j]);
+            }
+            for (int j = bottom - 1; j >= top; j--) {
+                res.add(matrix[j][left]);
+            }
+            left++;
+            bottom--;
         }
         return res;
     }
