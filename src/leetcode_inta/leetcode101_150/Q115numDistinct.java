@@ -1,5 +1,7 @@
 package leetcode_inta.leetcode101_150;
 
+import java.util.Arrays;
+
 /**
  * @author inta
  * @date 2020/2/21
@@ -65,5 +67,70 @@ public class Q115numDistinct {
             }
         }
         return dp[s.length()][t.length()];
+    }
+
+//    public int numDistinct2(String s, String t) {
+//        if (t.length() == 0) {
+//            return 1;
+//        }
+//        counts = new int[s.length()][t.length()];
+//        return solution(s, t, s.length() - 1, t.length() - 1);
+//    }
+//    private int solution(String s, String t, int start1, int start2) {
+//        if (start1 < start2 || start2 < 0) {
+//            return 0;
+//        }
+//        int res = 0;
+//        if (start2 == 0) {
+//            for (int i = start1; i >= 0; i--) {
+//                if (s.charAt(i) == t.charAt(0)) {
+//                    res++;
+//                }
+//            }
+//            return res;
+//        }
+//        for (int i = start1; i > 0; i--) {
+//            if (s.charAt(i) == t.charAt(start2)) {
+//                res += solution(s, t, i - 1, start2 - 1);
+//            }
+//        }
+//        return res;
+//    }
+
+    public int numDistinct2(String s, String t) {
+        if (t.length() == 0) {
+            return 1;
+        }
+        counts = new int[s.length()][t.length()];
+        for (int[] count : counts) {
+            Arrays.fill(count, -1);
+        }
+        return solution(s, t, s.length() - 1, t.length() - 1);
+    }
+    private int[][] counts;
+    private int solution(String s, String t, int start1, int start2) {
+        if (start1 < start2 || start2 < 0) {
+            return 0;
+        }
+        if (counts[start1][start2] != -1) {
+            return counts[start1][start2];
+        }
+        int res = 0;
+        if (start2 == 0) {
+            for (int i = start1; i >= 0; i--) {
+                if (s.charAt(i) == t.charAt(0)) {
+                    res++;
+                }
+            }
+            counts[start1][start2] = res;
+            return res;
+        }
+        for (int i = start1; i > 0; i--) {
+            if (s.charAt(i) == t.charAt(start2)) {
+                res += solution(s, t, i - 1, start2 - 1);
+            }
+        }
+        counts[start1][start2] = res;
+        return res;
     }
 }
