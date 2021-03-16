@@ -69,6 +69,7 @@ public class Q115numDistinct {
         return dp[s.length()][t.length()];
     }
 
+    // 59/74 TLE
 //    public int numDistinct2(String s, String t) {
 //        if (t.length() == 0) {
 //            return 1;
@@ -97,6 +98,7 @@ public class Q115numDistinct {
 //        return res;
 //    }
 
+    // 3ms 92%
     public int numDistinct2(String s, String t) {
         if (t.length() == 0) {
             return 1;
