@@ -51,6 +51,10 @@ public class Q115numDistinct {
         }
         for (int j = 1; j <= t.length(); j ++) {
             for (int i = 1; i <= s.length(); i ++) {
+                // 剪枝
+                if (i < j) {
+                    continue;
+                }
                 if (sChars[i - 1] == tChars[j - 1]) {
                     dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
                 } else {
