@@ -42,7 +42,7 @@ public class Q115numDistinct {
     public int numDistinct(String s, String t) {
         int res = 0;
         if (s.length() < t.length()) return res;
-        //转化成字符数组方便查找
+        // 转化成字符数组方便查找
         char[] sChars = s.toCharArray();
         char[] tChars = t.toCharArray();
         int[][] dp = new int[s.length() + 1][t.length() + 1];
