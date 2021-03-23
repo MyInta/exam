@@ -23,56 +23,50 @@ import java.util.List;
  * 解释: 通过重复调用 next 直到 hasNext 返回false，next 返回的元素的顺序应该是: [1,4,6]。
  *
  */
-//public class Q341NestedIterator  implements Iterator<Integer> {
+public class Q341NestedIterator  implements Iterator<Integer> {
 
-//    private interface NestedInteger{
-//         // @return true if this NestedInteger holds a single integer, rather than a nested list.
-//        //如果是嵌套list，返回false，如果是单个integer,返回true
-////        private boolean isInteger();
-////        private boolean isInteger(){return true;}
-//
-//        // @return the single integer that this NestedInteger holds, if it holds a single integer
-//        //返回嵌入的单个整数（如果他有的话）,否则返回null
-//         // Return null if this NestedInteger holds a nested list
-////         private Integer getInteger();
-////         private Integer getInteger(){return -1;}
-//
-//         // @return the nested list that this NestedInteger holds, if it holds a nested list
-//         // Return null if this NestedInteger holds a single integer
-//        //返回嵌入列表，若是整数，则返回null
-////         private List<NestedInteger> getList();
-////         private List<NestedInteger> getList(){return null;}
-//    }
-//
-//    private List<NestedInteger> nestedList;
-//    private int cur;
-//    private ArrayList<Integer> nums;
-//    public Q341NestedIterator(List<NestedInteger> nestedList) {
-//        this.nestedList = nestedList;
-//        cur = 0;
-//        nums = new ArrayList<>();
-//        solution(nestedList);
-//    }
-//
-//    private void solution(List<NestedInteger> list) {
-//        for (NestedInteger n : list) {
-//            if (!n.isInteger()) {
-//                solution(n.getList());
-//            } else {
-//                nums.add(n.getInteger());
-//            }
-//        }
-//    }
-//    @Override
-//    public Integer next() {
-//       return nums.get(cur ++);
-//    }
-//
-//    @Override
-//    public boolean hasNext() {
-//        return cur < nums.size();
-//    }
-//}
+    private List<Integer> result;
+    private int index;
+
+    public Q341NestedIterator(List<NestedInteger> nestedList) {
+        this.result = new ArrayList<>();
+        solution(nestedList);
+    }
+
+    private void solution(List<NestedInteger> nestedList) {
+        for (NestedInteger ni : nestedList) {
+            if (ni.isInteger()) {
+                result.add(ni.getInteger());
+            } else {
+                solution(ni.getList());
+            }
+        }
+    }
+
+    @Override
+    public Integer next() {
+        return result.get(index++);
+    }
+
+    @Override
+    public boolean hasNext() {
+        return index < result.size();
+    }
+}
+
+interface NestedInteger {
+  // @return true if this NestedInteger holds a single integer, rather than a nested list.
+  public boolean isInteger();
+
+  // @return the single integer that this NestedInteger holds, if it holds a single integer
+  // Return null if this NestedInteger holds a nested list
+  public Integer getInteger();
+
+  // @return the nested list that this NestedInteger holds, if it holds a nested list
+  // Return null if this NestedInteger holds a single integer
+  public List<NestedInteger> getList();
+}
+
 /**
  * Your NestedIterator object will be instantiated and called as such:
  * NestedIterator i = new NestedIterator(nestedList);
