@@ -49,4 +49,17 @@ public class Q83deleteDuplicates {
         }
         return dummy.next;
     }
+
+    public ListNode deleteDuplicates3(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        if (head.next.val == head.val) {
+            head.next = head.next.next;
+            deleteDuplicates(head);
+        } else {
+            deleteDuplicates(head.next);
+        }
+        return head;
+    }
 }
