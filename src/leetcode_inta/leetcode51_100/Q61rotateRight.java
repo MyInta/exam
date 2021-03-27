@@ -70,22 +70,24 @@ public class Q61rotateRight {
         }
 
         k %= size;
-        // tail和next节点之间,包括next为需要旋转片段
-        ListNode next = head;
+        // pre获取原末尾节点的前k个节点，tail获取末尾节点
+        ListNode pre = head;
         ListNode tail = head;
         while (k > 0) {
-            next = next.next;
+            tail = tail.next;
             k--;
         }
 
-        while (next.next != null) {
+        // 将tail推至末尾，由于前面while始得其与pre间距k，同时获得末尾节点前k的节点pre
+        while (tail.next != null) {
+            pre = pre.next;
             tail = tail.next;
-            next = next.next;
         }
 
-        next.next = head;
-        ListNode newHead = tail.next;
-        tail.next = null;
+        // 下面的过程就是将末尾节点和原头节点连接，将pre.next也就是需要反转的节点作为新的头结点，并且打断原先pre到新头结点的连接
+        tail.next = head;
+        ListNode newHead = pre.next;
+        pre.next = null;
         return newHead;
     }
 }
