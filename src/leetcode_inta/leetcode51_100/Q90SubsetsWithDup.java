@@ -55,27 +55,6 @@ public class Q90SubsetsWithDup {
     }
 
     private class Q90SubsetsWithDup2 {
-        private List<List<Integer>> res;
-        public List<List<Integer>> subsetsWithDup(int[] nums) {
-            res = new ArrayList<>();
-            Arrays.sort(nums);
-            solution(0, new ArrayList<>(), nums);
-            return res;
-        }
-        private void solution(int st, ArrayList<Integer> list, int[] nums) {
-            res.add(new ArrayList<>(list));
-            for (int i = st; i < nums.length; i++) {
-                if (i > st && nums[i -1] == nums[i]) {
-                    continue;
-                }
-                list.add(nums[i]);
-                solution(i + 1, list, nums);
-                list.remove(list.size()-1);
-            }
-        }
-    }
-
-    class Solution {
         private Set<List<Integer>> set;
 
         public List<List<Integer>> subsetsWithDup(int[] nums) {
@@ -97,6 +76,27 @@ public class Q90SubsetsWithDup {
                 list.remove(list.size() - 1);
             }
             set.add(new ArrayList<>(list));
+        }
+    }
+
+    private class Q90SubsetsWithDup3 {
+        private List<List<Integer>> res;
+        public List<List<Integer>> subsetsWithDup(int[] nums) {
+            res = new ArrayList<>();
+            Arrays.sort(nums);
+            solution(0, new ArrayList<>(), nums);
+            return res;
+        }
+        private void solution(int st, ArrayList<Integer> list, int[] nums) {
+            res.add(new ArrayList<>(list));
+            for (int i = st; i < nums.length; i++) {
+                if (i > st && nums[i -1] == nums[i]) {
+                    continue;
+                }
+                list.add(nums[i]);
+                solution(i + 1, list, nums);
+                list.remove(list.size()-1);
+            }
         }
     }
 }
