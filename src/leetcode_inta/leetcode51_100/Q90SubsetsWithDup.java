@@ -1,18 +1,13 @@
 package leetcode_inta.leetcode51_100;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author inta
  * @date 2019/9/18
  * @describe 给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
- *
  * 说明：解集不能包含重复的子集。
- *
  * 示例:
- *
  * 输入: [1,2,2]
  * 输出:
  * [
@@ -23,7 +18,6 @@ import java.util.List;
  *   [1,2],
  *   []
  * ]
- *
  */
 public class Q90SubsetsWithDup {
     List<List<Integer>> res;
@@ -78,6 +72,31 @@ public class Q90SubsetsWithDup {
                 solution(i + 1, list, nums);
                 list.remove(list.size()-1);
             }
+        }
+    }
+
+    class Solution {
+        private Set<List<Integer>> set;
+
+        public List<List<Integer>> subsetsWithDup(int[] nums) {
+            this.set = new HashSet<>();
+            Arrays.sort(nums);
+            solution(new ArrayList<>(), nums, 0);
+            List<List<Integer>> result = new ArrayList<>(set);
+            return result;
+        }
+
+        private void solution(List<Integer> list, int[] nums, int start) {
+            if (start == nums.length) {
+                set.add(new ArrayList<>(list));
+                return;
+            }
+            for (int i = start; i < nums.length; i++) {
+                list.add(nums[i]);
+                solution(list, nums, i + 1);
+                list.remove(list.size() - 1);
+            }
+            set.add(new ArrayList<>(list));
         }
     }
 }
