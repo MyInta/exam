@@ -20,21 +20,21 @@ import java.util.*;
  * ]
  */
 public class Q90SubsetsWithDup {
-    List<List<Integer>> res;
-    List<Integer> list;
-    boolean[] visited;
+    private List<List<Integer>> res;
+    private boolean[] visited;
 
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         res = new ArrayList<>();
         visited = new boolean[nums.length];
-        //先将其排序，可以比较前后两个数是否一样而且是否不该取值
+        // 先将其排序，可以比较前后两个数是否一样而且是否不该取值
         Arrays.sort(nums);
         robot(0, nums);
         return res;
     }
+
     private void robot(int st, int[] nums) {
         if (st > nums.length-1) {
-            list = new ArrayList<>();
+            List<Integer> list = new ArrayList<>();
             for (int i = 0; i < nums.length; i++) {
                 if (visited[i]) {
                     list.add(nums[i]);
@@ -43,7 +43,7 @@ public class Q90SubsetsWithDup {
             res.add(list);
             return;
         }
-        if (st > 0&& nums[st - 1] == nums[st] && visited[st - 1] == false) {
+        if (st > 0&& nums[st - 1] == nums[st] && !visited[st - 1]) {
             visited[st] = false;
             robot(st + 1, nums);
         } else {
