@@ -40,4 +40,21 @@ public class Q1006clumsy {
         }
         return res;
     }
+
+    // 数学规律， 大于4之后的值是在N + {1, 2, 2, -1}之间轮回
+    public int clumsy2(int N) {
+        if (N <= 4) {
+            int first = N > 1 ? N - 1 : 1;
+            int second = N > 2 ? N - 2 : 1;
+            int third = N > 3 ? N - 3 : 0;
+            return N * first / second + third;
+        }
+        if (N % 4 == 0) {
+            return N + 1;
+        } else if (N % 4 == 3) {
+            return N - 1;
+        } else {
+            return N + 2;
+        }
+    }
 }
