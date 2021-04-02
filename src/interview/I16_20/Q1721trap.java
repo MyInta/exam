@@ -21,11 +21,11 @@ public class Q1721trap {
         Stack<Integer> stack = new Stack<>();
         List<int[]> lists = new ArrayList<>();
         for (int i = 0; i < height.length; i++) {
-            if (stack.isEmpty() || height[i] < stack.peek()) {
+            if (stack.isEmpty() || height[i] < height[stack.peek()]) {
                 stack.push(height[i]);
             } else {
                 int left = 0;
-                while (!stack.isEmpty() && stack.peek() < height[i]) {
+                while (!stack.isEmpty() && height[stack.peek()] < height[i]) {
                     left = stack.pop();
                 }
                 if (!stack.isEmpty()) {
@@ -35,7 +35,7 @@ public class Q1721trap {
             }
         }
         // 此时获得洼地数组，但是考虑有嵌套，故来一波合并
-        Collections.sort(lists, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+        lists.sort((a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
         int left = -1;
         int res = 0;
         for (int i = 0; i < lists.size(); i++) {
