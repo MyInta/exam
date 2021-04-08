@@ -28,7 +28,7 @@ public class Q153findMin {
                 //如果小于右值,最小值必在[left, mid]区间中
                 right = mid;
             }
-            //mid可能和right相等吗？只有当right与left相差为0才行，即跳出while
+            // mid可能和right相等吗？只有当right与left相差为0才行，即跳出while
         }
         return nums[left];
     }
