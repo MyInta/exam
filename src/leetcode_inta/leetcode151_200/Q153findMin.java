@@ -24,11 +24,11 @@ public class Q153findMin {
             if (nums[mid] > nums[right]) {
                 //如果大于右值，最小值必在(mid-right)区间中
                 left = mid + 1;
-            } else if (nums[mid] < nums[right]) {
+            } else {
                 //如果小于右值,最小值必在[left, mid]区间中
+                // mid可能和right相等吗？只有当right与left相差为0才行，即跳出while
                 right = mid;
             }
-            // mid可能和right相等吗？只有当right与left相差为0才行，即跳出while
         }
         return nums[left];
     }
