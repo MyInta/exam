@@ -17,7 +17,7 @@ package leetcode_inta.leetcode51_100;
  * 这会影响到程序的时间复杂度吗？会有怎样的影响，为什么？
  */
 public class Q81search {
-    //分而治之的思想
+    // 分而治之的思想
     public boolean search(int[] nums, int target) {
         if (nums == null || nums.length == 0) return false;
         return solution(nums, 0, nums.length - 1, target);

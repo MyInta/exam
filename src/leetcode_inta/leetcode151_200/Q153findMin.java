@@ -4,24 +4,18 @@ package leetcode_inta.leetcode151_200;
  * @author inta
  * @date 2019/12/10
  * @describe 假设按照升序排序的数组在预先未知的某个点上进行了旋转。
- *
  * ( 例如，数组 [0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2] )。
- *
  * 请找出其中最小的元素。
- *
  * 你可以假设数组中不存在重复元素。
- *
  * 示例 1:
- *
  * 输入: [3,4,5,1,2]
  * 输出: 1
  * 示例 2:
- *
  * 输入: [4,5,6,7,0,1,2]
  * 输出: 0
  */
 public class Q153findMin {
-    //这道题目如果耍无赖，直接遍历找最小即可，但是这样失去数学题的精华了，直觉是用归并,先二分试试
+    // 这道题目如果耍无赖，直接遍历找最小即可，但是这样失去数学题的精华了，直觉是用归并,先二分试试
     public int findMin(int[] nums) {
         int left = 0;
         int right = nums.length - 1;
@@ -37,5 +31,23 @@ public class Q153findMin {
             //mid可能和right相等吗？只有当right与left相差为0才行，即跳出while
         }
         return nums[left];
+    }
+
+    // 分而治之
+    public int findMin2(int[] nums) {
+        return solution(nums, 0, nums.length - 1);
+    }
+
+    private int solution(int[] nums, int start, int end) {
+        if (start > end) {
+            return Integer.MAX_VALUE;
+        }
+        if (end == start) {
+            return nums[start];
+        }
+        int mid = start + (end - start) / 2;
+        int left = solution(nums, start, mid - 1);
+        int right = solution(nums, mid + 1, end);
+        return Math.min(Math.min(left, right), nums[mid]);
     }
 }
