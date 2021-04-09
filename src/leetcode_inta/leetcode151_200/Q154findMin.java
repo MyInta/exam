@@ -30,7 +30,7 @@ public class Q154findMin {
                 right = mid;
             } else {
                 // 如果重复，就缩减右边界，最小值是不会受影响被删光的
-                right --;
+                right--;
             }
         }
         return nums[left];
@@ -39,7 +39,7 @@ public class Q154findMin {
     public int findMin2(int[] nums) {
         int left = 0;
         int right = nums.length - 1;
-        while (left <= right) {
+        while (left < right) {
             int mid = left + (right - left) / 2;
             if (nums[mid] < nums[left]) {
                 right = mid;
