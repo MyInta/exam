@@ -20,24 +20,20 @@ import java.util.Comparator;
  *
  */
 public class Q179largestNumber{
-    private class largestNumber_comparator implements Comparator<String>{
-        @Override
-        public int compare(String o1, String o2) {
-            return (o2 + o1).compareTo(o1 + o2);
-        }
-    }
-    public String largestNumber (int[] nums) {
+    public String largestNumber2 (int[] nums) {
         if (nums == null || nums.length == 0) return "0";
         String[] numsStr = new String[nums.length];
         int index = 0;
         for (int num : nums) {
             numsStr[index ++] = String.valueOf(num);
         }
-        Arrays.sort(numsStr, new largestNumber_comparator());
-        if (numsStr[0].equals("0")) return "0";
+        Arrays.sort(numsStr, (a, b)->(b + a).compareTo(a + b));
+        if (numsStr[0].equals("0")) {
+            return "0";
+        }
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < index; i ++) {
-            sb.append(numsStr[i]);
+        for (String str : numsStr) {
+            sb.append(str);
         }
         return sb.toString();
     }
