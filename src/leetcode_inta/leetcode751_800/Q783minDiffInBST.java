@@ -36,7 +36,7 @@ public class Q783minDiffInBST {
 
     private List<Integer> list;
 
-    // 二叉搜索树先序遍历可以得到递增序列，挨个找最近邻的
+    // 二叉搜索树中序遍历可以得到递增序列，挨个找最近邻的
     public int minDiffInBST(TreeNode root) {
         list = new ArrayList<>();
         preOrder(root);
