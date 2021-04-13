@@ -1,6 +1,8 @@
 package leetcode_inta.leetcode751_800;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -34,29 +36,27 @@ public class Q783minDiffInBST {
         }
     }
 
-    private List<Integer> list;
-
-    // 二叉搜索树中序遍历可以得到递增序列，挨个找最近邻的
+    // 二叉搜索树中序迭代
     public int minDiffInBST(TreeNode root) {
-        list = new ArrayList<>();
-        preOrder(root);
-        int res = Integer.MAX_VALUE;
-        for (int i = 0; i < list.size() - 1; i++) {
-            res = Math.min(res, list.get(i + 1) - list.get(i));
+        Deque<TreeNode> dq = new LinkedList<>();
+        TreeNode cur = root;
+        long res = Integer.MAX_VALUE;
+        long pre = Integer.MIN_VALUE;
+        while (cur != null || !dq.isEmpty()) {
+            while (cur != null) {
+                dq.push(cur);
+                cur = cur.left;
+            }
+            cur = dq.pop();
+            // 如果不转换为long，节点内计算结果为Integer类型
+            res = Math.min(res, (long)cur.val - pre);
+            pre = cur.val;
+            cur = cur.right;
         }
-        return res;
+        return (int)res;
     }
 
-    private void preOrder(TreeNode tn) {
-        if (tn.left != null) {
-            preOrder(tn.left);
-        }
-        list.add(tn.val);
-        if (tn.right != null) {
-            preOrder(tn.right);
-        }
-    }
-    // ----------------------方法二-----------------------------------
+    // ----------------------方法二、递归-----------------------------------
 
     // 根据bst特性，中序遍历数组为升序数组，从中找差值即可
     private long res = Integer.MAX_VALUE;
