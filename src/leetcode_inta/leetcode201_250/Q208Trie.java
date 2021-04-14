@@ -6,7 +6,6 @@ package leetcode_inta.leetcode201_250;
  * @describe 实现一个 Trie (前缀树)，包含 insert, search, 和 startsWith 这三个操作。
  * 示例:
  * Trie trie = new Trie();
- *
  * trie.insert("apple");
  * trie.search("apple");   // 返回 true
  * trie.search("app");     // 返回 false
@@ -14,61 +13,61 @@ package leetcode_inta.leetcode201_250;
  * trie.insert("app");
  * trie.search("app");     // 返回 true
  * 说明:
- *
  * 你可以假设所有的输入都是由小写字母 a-z 构成的。
  * 保证所有输入均为非空字符串。
- *
  */
 public class Q208Trie {
-    class TreeNode{
-        boolean isword;
-        TreeNode[] child = new TreeNode[26];
-        TreeNode(){
-            isword = false;
+    private class TreeNode {
+        TreeNode[] child;
+        boolean isWord;
+        TreeNode() {
+            child = new TreeNode[127];
+            isWord = false;
         }
     }
 
-    TreeNode root;
+    private TreeNode tn;
+
     /** Initialize your data structure here. */
     public Q208Trie() {
-        root = new TreeNode();
+        tn = new TreeNode();
     }
 
     /** Inserts a word into the trie. */
     public void insert(String word) {
-        TreeNode t = root;
-        for(int i=0;i<word.length();i++){
-            int idx = word.charAt(i)- 'a';
-            if(t.child[idx]==null){
-                t.child[idx] = new TreeNode();
-            }
-            t = t.child[idx];
+        if (search(word)) {
+            return;
         }
-        t.isword = true;
+        TreeNode temp = tn;
+        for (char c : word.toCharArray()) {
+            if (temp.child[c] == null) {
+                temp.child[c] = new TreeNode();
+            }
+            temp = temp.child[c];
+        }
+        temp.isWord = true;
     }
 
     /** Returns if the word is in the trie. */
     public boolean search(String word) {
-        TreeNode t = root;
-        for(int i=0;i<word.length();i++){
-            int idx = word.charAt(i)- 'a';
-            if(t.child[idx]==null){
+        TreeNode temp = tn;
+        for (char c : word.toCharArray()) {
+            if (temp.child[c] == null) {
                 return false;
             }
-            t = t.child[idx];
+            temp = temp.child[c];
         }
-        return t.isword;
+        return temp.isWord;
     }
 
     /** Returns if there is any word in the trie that starts with the given prefix. */
     public boolean startsWith(String prefix) {
-        TreeNode t = root;
-        for(int i=0;i<prefix.length();i++){
-            int idx = prefix.charAt(i)- 'a';
-            if(t.child[idx]==null){
+        TreeNode temp = tn;
+        for (char c : prefix.toCharArray()) {
+            if (temp.child[c] == null) {
                 return false;
             }
-            t = t.child[idx];
+            temp = temp.child[c];
         }
         return true;
     }
