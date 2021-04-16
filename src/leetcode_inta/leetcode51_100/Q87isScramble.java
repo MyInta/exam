@@ -35,13 +35,14 @@ package leetcode_inta.leetcode51_100;
  */
 public class Q87isScramble {
     public boolean isScramble(String s1, String s2) {
+        System.out.println(s1 + "----" + s2);
         if (!match(s1, s2)) {
             return false;
         }
-        if (s1.length() == 1) {
+        if (s1.length() == 1 || s1.equals(s2)) {
             return true;
         }
-        for (int i = 1; i <= s1.length(); i++) {
+        for (int i = 1; i < s1.length(); i++) {
             if (check(s1, i, s2)) {
                 return true;
             }
@@ -57,7 +58,7 @@ public class Q87isScramble {
         if (match(target, from1)) {
             first = isScramble(target, from1);
         }
-        String from2 = s2.substring(s2.length() - 1 - index, s2.length());
+        String from2 = s2.substring(s2.length() - index, s2.length());
         boolean second = false;
         if (match(target, from2)) {
             second = isScramble(target, from2);
