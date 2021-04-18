@@ -16,6 +16,12 @@ import java.util.*;
  * 示例 3:
  * 输入: nums = [1,5,9,1,5,9], k = 2, t = 3
  * 输出: false
+ * 提示：
+ *
+ * 0 <= nums.length <= 2 * 10^4
+ * -2^3^=1 <= nums[i] <= 2^31 - 1
+ * 0 <= k <= 10^4
+ * 0 <= t <= 2^31 - 1
  */
 public class Q220containsNearbyAlmostDuplicate {
     // 首先想到暴力法,效率极低是肯定的
@@ -54,10 +60,10 @@ public class Q220containsNearbyAlmostDuplicate {
         // 用来存储桶id和对应桶内一个元素
         Map<Long, Long> map = new HashMap<>();
         // 不符合题意
-        if (k <= 0 || t < 0) {
+        if (k == 0) {
             return false;
         }
-        for (int i = 0; i < nums.length; i ++) {
+        for (int i = 0; i < nums.length; i++) {
             // 但要考虑整体元素索引差值是否超过限值k(满距离为k+1)，下一伦即将超过就减去最前面一个元素所在桶位置内元素（维持长度k+1的map窗口）
             if (i > k) map.remove(getId(nums[i - k - 1], t + 1));
             long id = getId(nums[i], (long)t + 1);
