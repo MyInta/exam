@@ -67,4 +67,21 @@ public class Q897increasingBST {
             return root;
         }
     }
+
+    public TreeNode increasingBST2(TreeNode root) {
+        if (root.right != null) {
+            root.right = increasingBST(root.right);
+        }
+        if (root.left != null) {
+            TreeNode mark = root.left;
+            root.left = null;
+            TreeNode cur = mark;
+            while (cur.right != null) {
+                cur = cur.right;
+            }
+            cur.right = root;
+            return increasingBST(mark);
+        }
+        return root;
+    }
 }
