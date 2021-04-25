@@ -32,6 +32,7 @@ public class Q368largestDivisibleSubset {
         visited = new boolean[len][len];
         List<List<Integer>> lists = new ArrayList<>();
         for (int i = 0; i < len; i++) {
+            System.out.println(i + "-");
             for (int j = i + 1; j < len; j++) {
                 if (visited[i][j]) {
                     continue;
@@ -49,6 +50,7 @@ public class Q368largestDivisibleSubset {
         }
         List<Integer> res = new ArrayList<>();
         for (List<Integer> list : lists) {
+            System.out.println(list);
             if (list.size() > res.size()) {
                 res = list;
             }
@@ -68,11 +70,4 @@ public class Q368largestDivisibleSubset {
             }
         }
     }
-
-    // [1,2,3]
-    //[1,2,4,8]
-    //[1]
-    //[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-    //[5,9,18,54,108,540,90,180,360,720]
-    //[5,9,18,54,108]
 }
