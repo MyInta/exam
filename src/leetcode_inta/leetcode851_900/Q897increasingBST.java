@@ -48,32 +48,12 @@ public class Q897increasingBST {
     }
 
     public TreeNode increasingBST(TreeNode root) {
-        if (root == null) {
-            return root;
-        }
-        root.right = increasingBST(root.right);
-        if (root.left != null) {
-            // 记录下此时的左子节点tn
-            TreeNode tn = root.left;
-            // 切断原有的左连接
-            root.left = null;
-            TreeNode cur = tn;
-            while (tn.right != null) {
-                tn = tn.right;
-            }
-            tn.right = root;
-            return increasingBST(cur);
-        } else {
-            return root;
-        }
-    }
-
-    public TreeNode increasingBST2(TreeNode root) {
         if (root.right != null) {
             root.right = increasingBST(root.right);
         }
         if (root.left != null) {
             TreeNode mark = root.left;
+            // 切断连接
             root.left = null;
             TreeNode cur = mark;
             while (cur.right != null) {
