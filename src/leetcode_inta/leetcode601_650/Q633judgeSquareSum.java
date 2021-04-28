@@ -19,29 +19,43 @@ package leetcode_inta.leetcode601_650;
  *
  */
 public class Q633judgeSquareSum {
-    //双指针
+    // 双指针
     public boolean judgeSquareSum(int c) {
-        long sqrt = (long) Math.sqrt(c);
-        long i = 0, j = sqrt;
+        long i = 0;
+        long j = (int) Math.sqrt(c);
         while (i <= j) {
             long sum = i * i + j * j;
             if (sum == c) {
                 return true;
             }
             if (sum > c) {
-                j --;
+                j--;
             } else {
-                i ++;
+                i++;
             }
         }
         return false;
     }
 
-    //官解的sqrt函数
+    // 官解的sqrt函数
     public boolean judgeSquareSum2(int c) {
-        for (int i = 0; i * i < c; i ++) {
+        for (int i = 0; i * i < c; i++) {
             double j = Math.sqrt(c - i * i);
-            if (j == (int)j) return true;
+            if (j == (int)j) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean judgeSquareSum3(int c) {
+        int mid = (int)Math.sqrt(c);
+        for (int i = 0; i <= mid; i++) {
+            int resume = c - i * i;
+            int resumeSqrt = (int)Math.sqrt(resume);
+            if (resumeSqrt * resumeSqrt == resume) {
+                return true;
+            }
         }
         return false;
     }
