@@ -31,7 +31,7 @@ public class Q872leafSimilar {
         if (r1.size() != r2.size()) {
             return false;
         }
-        for (int i = 0; i < r1.size(); i ++) {
+        for (int i = 0; i < r1.size(); i++) {
             if (!r1.get(i).equals(r2.get(i))) {
                 return false;
             }
