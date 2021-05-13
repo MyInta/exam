@@ -31,23 +31,44 @@ import java.util.Set;
  * 对于 dislikes[i] == dislikes[j] 不存在 i != j
  */
 public class Q886possibleBipartition {
-    // 使用map来建立关系
+    // 邻接表+上色 dfs上色过程即可
+    private Map<Integer, Set<Integer>> map;
+    private Map<Integer, Integer> colors;
     public boolean possibleBipartition(int N, int[][] dislikes) {
-        Map<Integer, Set<Integer>> map = new HashMap<>();
-        for (int[] dislike : dislikes) {
-            int first = dislike[0] > dislike[1] ? dislike[1] : dislike[0];
-            int second = dislike[0] < dislike[1] ? dislike[1] : dislike[0];
-            if (map.containsKey(first)) {
-                for (Integer num : map.get(first)) {
-                    if (map.containsKey(num) && map.get(num).contains(second)) {
-                        return false;
-                    }
-                }
+        // 邻接表，记录人与人之间的喜好关系
+        map = new HashMap<>();
+        // 创建着色记录，记录人员标号和颜色
+        colors = new HashMap<>();
+        // 邻接表初始化，将所有成员间关系建立
+        for (int[] dis : dislikes) {
+            Set<Integer> temp1 = map.getOrDefault(dis[0], new HashSet<>());
+            temp1.add(dis[1]);
+            map.put(dis[0], temp1);
+            Set<Integer> temp2 = map.getOrDefault(dis[1], new HashSet<>());
+            temp2.add(dis[0]);
+            map.put(dis[1], temp2);
+        }
+        for (int i = 1; i <= N; i++) {
+            if (!colors.containsKey(i) && !dfs(i, 0)) {
+                return false;
             }
-            Set<Integer> temp = map.getOrDefault(first, new HashSet<>());
-            temp.add(second);
-            map.put(first, temp);
         }
         return true;
     }
+
+    private boolean dfs(int i, int color) {
+        if (colors.containsKey(i)) {
+            return colors.get(i).equals(color);
+        }
+        // 着色
+        colors.put(i, color);
+        // 遍历其关联对象进行另一个着色
+        for (Integer other : map.getOrDefault(i, new HashSet<>())) {
+            if (!dfs(other, color ^ 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
