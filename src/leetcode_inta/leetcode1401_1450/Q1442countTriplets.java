@@ -54,4 +54,22 @@ public class Q1442countTriplets {
         }
         return res;
     }
+
+    // 看了评论区的思路，豁然开朗
+    // 需要用到a^b=b^a ==> 如果a^b^c^...^n = 0那么左式中任意几个取出来亦或值和剩余元素的亦或值相等
+    public int countTriplets2(int[] arr) {
+        int len = arr.length;
+        int res = 0;
+        for (int i = 0; i < len; i++) {
+            int sum = 0;
+            for (int j = i; j < len; j++) {
+                sum ^= arr[j];
+                if (sum == 0 && i != j) {
+                    // i到j区间亦或结果为0，那么任意取出几个元素亦或结果和剩余元素亦或结果相等，这种取法有j-i个
+                    res += j - i;
+                }
+            }
+        }
+        return res;
+    }
 }
