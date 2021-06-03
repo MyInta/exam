@@ -37,24 +37,18 @@ public class Q523checkSubarraySum {
 
     // 官解使用map来保存累加的num值，利用map查询累加值前一个差k倍数的前缀值索引位置，通过map的v保存的索引之差来确定间距是否大于等于2
     public boolean checkSubarraySum2(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        // 先预先放一个0进去，防治空指针(其索引是-1)
-        map.put(0, -1);
-        int sum = 0;
+        Map<Long, Integer> map = new HashMap<>();
+        map.put((long)0, -1);
+        long curSum = 0;
         for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
-            if (k != 0) {
-                sum = sum % k;
-            }
-            // 只要map中存在sum，就说明有一个位置是与当前位置累加值相差k的n倍(0~n)
-            if (map.containsKey(sum)) {
-                if (i - map.get(sum) > 1) {
-                    // 当两者距离超过1，符合题意
+            curSum = (curSum + nums[i]) % k;
+            if (map.containsKey(curSum)) {
+                // 当找到的区间长度大于等于2
+                if (i - map.get(curSum) > 1) {
                     return true;
                 }
             } else {
-                // 如果没有找到，那么我们要把新的累加值情况放到map中
-                map.put(sum, i);
+                map.put(curSum, i);
             }
         }
         return false;
