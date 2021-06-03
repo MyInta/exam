@@ -20,21 +20,20 @@ import java.util.Map;
 public class Q525findMaxLength {
     // 使用暴力破解的方法 时间超了
     public int findMaxLength(int[] nums) {
-        int res = 0;
-        for (int i = 0; i < nums.length; i++) {
-            int num_zero = 0, num_one = 0;
-            for (int j = i; j < nums.length; j++) {
-                if (nums[j] == 0) {
-                    num_zero++;
-                } else {
-                    num_one++;
-                }
-                if (num_zero == num_one) {
-                    res = Math.max(res, j - i + 1);
+        int size = nums.length;
+        int[] counts = new int[size + 1];
+        for (int i = 1; i <= size; i++) {
+            counts[i] = counts[i - 1] + (nums[i - 1] & 1);
+        }
+        int max = 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = i + 2; j <= size; j += 2) {
+                if (counts[j] - counts[i] == (j - i) / 2) {
+                    max = Math.max(max, j - i);
                 }
             }
         }
-        return res;
+        return max;
     }
 
     // 使用map来保存之前累加出现过的记录 核心思路：0改成-1后，一个累加值出现之后，第二次以及第N次出现以前，必定01数量相等
