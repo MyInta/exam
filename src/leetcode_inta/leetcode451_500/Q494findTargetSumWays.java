@@ -36,25 +36,8 @@ public class Q494findTargetSumWays {
                 + solution(nums, start + 1, target - nums[start]);
     }
 
-    // 01背包问题
-    public int findTargetSumWays2(int[] nums, int S) {
-        int sum = 0;
-        for (int num : nums) sum += num;
-        // 如果为奇数，无解,如果不加sum与S的判断，容易内存LE
-        if ((sum + S) % 2 != 0 || sum < S) return 0;
-        int target = (sum + S) >> 1;
-        int[] dp = new int[target + 1];
-        dp[0] = 1;
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = target; j >= nums[i]; j--) {
-                dp[j] += dp[j - nums[i]];
-            }
-        }
-        return dp[target];
-    }
-
     // 反过来想，累加和，找差值一半的目标
-    public int findTargetSumWays3(int[] nums, int target) {
+    public int findTargetSumWays2(int[] nums, int target) {
         int sum = 0;
         for (int num : nums) {
             sum += num;
