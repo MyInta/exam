@@ -16,9 +16,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        char a = '=';
-        char b = '!';
-        System.out.println(a - b);
+        String str = "iveo    eed   l te   olc";
+        System.out.println(str.length());
     }
 
 
